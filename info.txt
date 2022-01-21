@@ -1,0 +1,16 @@
+
+
+Minishell
+
+|
+ 
+simple commands
+- <
+- <<
+- >
+- >>
+
+expansions:
+bash variable expansion -> $HOME -> /Users/home
+word splitting -> split $IFS (= " \n\t")
+quote removal
