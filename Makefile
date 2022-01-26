@@ -25,7 +25,7 @@ SRCS=			environement.c \
 LIBRARYS	= 
 
 CLANG		=	gcc
-CPP_FLAGS	=	-Wextra -Wall -Werror -fsanitize=address -g3
+CPP_FLAGS	=	-Wextra -Wall -Werror -g3 -fsanitize=address
 CPP_IFLAGS	=	
 
 CPP_LFLAGS	= 
