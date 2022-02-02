@@ -11,19 +11,21 @@ int expand_words(t_cmd *cmd)
 
 	i = 0;
 	n_words = 1;
+	i += skip_ifs(*cmd->av + i);
 	while (*cmd->av && (*cmd->av)[i])
 	{
 		quote = get_quote((*cmd->av)[i]);
-		if (!is_ifs((*cmd->av)[i]) || quote != QUOTE_NONE)
+		if ((*cmd->av)[i] && (!is_ifs((*cmd->av)[i]) || quote != QUOTE_NONE))
 			i++;
 		else
 		{
-			n_words++;
 			i += skip_ifs(*cmd->av + i);
+			if ((*cmd->av)[i])
+				n_words++;
 		}
 	}
 
-
+	cmd->ac = n_words;
 	argv = malloc(sizeof(char *) * (n_words + 1));
 	if (!argv)
 		return (1);
@@ -51,19 +53,5 @@ int expand_words(t_cmd *cmd)
 	free(*cmd->av);
 	free(cmd->av);
 	cmd->av = argv;
-
-
-
-	printf("printing argv\n");
-	while (cmd->av && *cmd->av)
-	{
-		printf("|%s|\n", *cmd->av);
-		cmd->av++;
-	}
-	printf ("\n");
-
-
-
-
 	return (0); 
 }

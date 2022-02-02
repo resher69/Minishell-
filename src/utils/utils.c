@@ -61,7 +61,7 @@ size_t      ft_bcopy(char *dst, char *src, size_t size)
 }
 
 
-
+#include <stdio.h>
 char		*ft_strldup(char *str, size_t size)
 {
 	char	*dup;
@@ -81,10 +81,9 @@ char		*ft_strldup(char *str, size_t size)
 void		ft_strlcpy(char *dst, char *src, size_t len)
 {
 	while (dst && src && *src && len-- > 0)
-	{
 		*dst++ = *src++;
-	}
 }
+
 int	is_ifs(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');

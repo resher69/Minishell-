@@ -5,7 +5,6 @@ t_cmd	*expand(char *cmd)
 {
     t_cmd *command;
 
-//    assertfalse(cmd);
     command = malloc(sizeof(t_cmd));
     if (!command)
         return (NULL);

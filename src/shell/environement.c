@@ -48,11 +48,8 @@ void	add_env(t_env_var *new)
 void	init_env(char **envp)
 {
 	t_env_var	*var;
-	size_t		i;
 	size_t		equal_pos;
 
-	i = 0;
-//	assertfalse(g_env);
 	while (envp && *envp)
 	{
 		equal_pos = ft_strchr(*envp, '=');
@@ -60,7 +57,6 @@ void	init_env(char **envp)
 			ft_strldup(*envp, equal_pos),
 			ft_strldup(*envp + equal_pos + 1, ft_strlen(*envp) - equal_pos - 1)
 		);
-//		assertfalse(var);
 		add_env(var);
 		envp++;
 	}	
