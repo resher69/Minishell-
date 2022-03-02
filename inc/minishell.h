@@ -7,6 +7,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <string.h>
 
 # include "utils.h"
 

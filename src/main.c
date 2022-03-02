@@ -71,7 +71,6 @@ int main(int ac, char **av, char **envp)
 		return (printf("No arg needed\n") * 0 + 1);
 	init_env(envp);
 	shell = malloc(sizeof(t_shell));
-	// expand("je       suis gay         'homosexuel         et'      |     \"transgenre puis\" $HOME homophobe         ");
 	while (1)
 	{
 		usr_input = readline("Minishell$>");
@@ -85,6 +84,20 @@ int main(int ac, char **av, char **envp)
 				while (i < shell->n_cmd)
 				{
 					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av);
+					printf("printing argv\n");
+					while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && *shell->usr_cmd[i]->av)
+					{
+						if (strncmp(*shell->usr_cmd[i]->av, "<", 1) == 0)
+							printf("redir in simple\n");
+						else if (strncmp(*shell->usr_cmd[i]->av, "<<", 2) == 0)
+							printf("redir in double\n");
+						else if (strncmp(*shell->usr_cmd[i]->av, ">", 1) == 0)
+							printf("redir out simple\n");
+						else if (strncmp(*shell->usr_cmd[i]->av, ">>", 2) == 0)
+							printf("redir out double\n");
+						printf("|%s|\n", *shell->usr_cmd[i]->av);
+						shell->usr_cmd[i]->av++;
+					}
 					i++;
 				}
 			}

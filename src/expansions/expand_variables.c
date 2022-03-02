@@ -80,6 +80,14 @@ int expand_variables(t_cmd *cmd)
 			free(buffer);
 		}
 	}
+	if (quote != QUOTE_NONE)
+	{
+		if (quote == QUOTE_SINGLE)
+			quote = get_quote('\'');
+		else
+			quote = get_quote('\"');
+		return (-1 + (printf("Minishell : parse error : unclosed quote\n") * 0));
+	}
 	*cmd->av = cpy_expand(*cmd->av, expanded_size, 0);
 	return (0);  	  
 }

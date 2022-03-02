@@ -13,7 +13,8 @@ t_cmd	*expand(char *cmd)
         return (NULL);
     *command->av = cmd;
     command->ac = 0;
-    expand_variables(command);
+    if (expand_variables(command) == -1)
+        return (NULL);
     expand_words(command);
     expand_quotes(command);
     return (command);
