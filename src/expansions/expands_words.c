@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expands_words.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 16:16:39 by agardet           #+#    #+#             */
+/*   Updated: 2022/03/03 16:17:05 by agardet          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-int expand_words(t_cmd *cmd)
+int	expand_words(t_cmd *cmd)
 {
-	int 	i;
+	int		i;
 	int		j;
-	size_t  n_words;
-	char 	**argv;
+	size_t	n_words;
+	char	**argv;
 	int		quote;
 
 	i = 0;
@@ -24,12 +35,10 @@ int expand_words(t_cmd *cmd)
 				n_words++;
 		}
 	}
-
 	cmd->ac = n_words;
 	argv = malloc(sizeof(char *) * (n_words + 1));
 	if (!argv)
 		return (1);
-
 	i = 0;
 	while (*cmd->av && (*cmd->av)[i])
 	{
@@ -53,5 +62,5 @@ int expand_words(t_cmd *cmd)
 	free(*cmd->av);
 	free(cmd->av);
 	cmd->av = argv;
-	return (0); 
+	return (0);
 }

@@ -1,6 +1,19 @@
-#include "utils.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 16:20:34 by agardet           #+#    #+#             */
+/*   Updated: 2022/03/03 16:22:00 by agardet          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
-size_t		ft_strcmp(char *a, char *b)
+#include "utils.h"
+#include <stdio.h>
+
+size_t	ft_strcmp(char *a, char *b)
 {
 	while (a && b && *a && *b && *a == *b)
 	{
@@ -10,20 +23,17 @@ size_t		ft_strcmp(char *a, char *b)
 	return (*b - *a);
 }
 
-
-size_t      ft_strlen(char *s)
+size_t	ft_strlen(char *s)
 {
-	size_t i;
+	size_t	i;
 
-    i = 0;
- 	while (s && s[i])
+	i = 0;
+	while (s && s[i])
 		i++;
 	return (i);
 }
 
-
-
-size_t      ft_strchr(char *s, char c)
+size_t	ft_strchr(char *s, char c)
 {
 	size_t	i;
 
@@ -33,9 +43,7 @@ size_t      ft_strchr(char *s, char c)
 	return (i);
 }
 
-
-
-size_t      ft_bzero(char *str, size_t size)
+size_t	ft_bzero(char *str, size_t size)
 {
 	size_t	i;
 
@@ -45,23 +53,19 @@ size_t      ft_bzero(char *str, size_t size)
 	return (i);
 }
 
-
-
-size_t      ft_bcopy(char *dst, char *src, size_t size)
+size_t	ft_bcopy(char *dst, char *src, size_t size)
 {	
 	size_t	i;
-	
+
 	i = 0;
 	while (i < size)
 	{
 		dst[i] = src[i];
-		i++;	
+		i++;
 	}	
 	return (i);
 }
 
-
-#include <stdio.h>
 char		*ft_strldup(char *str, size_t size)
 {
 	char	*dup;
@@ -91,12 +95,13 @@ int	is_ifs(char c)
 
 int	is_valid_var_char(char c)
 {
-	return (!is_ifs(c) && c != 0 && c != 61 && c != 36 && c != 32 && ((c >= 97 && c <= 126) || (c >= 65 && c <= 91)));
+	return (!is_ifs(c) && c != 0 && c != 61 && c != 36 && c != 32 \
+		&& ((c >= 97 && c <= 126) || (c >= 65 && c <= 91)));
 }
 
 int skip_ifs(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str && str[i] && is_ifs(str[i]))

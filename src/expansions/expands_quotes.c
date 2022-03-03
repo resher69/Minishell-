@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expands_quotes.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 16:16:14 by agardet           #+#    #+#             */
+/*   Updated: 2022/03/03 16:16:28 by agardet          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-int expand_quotes(t_cmd *cmd)
+int	expand_quotes(t_cmd *cmd)
 {
 	size_t	i;
 	size_t	j;
@@ -33,5 +44,5 @@ int expand_quotes(t_cmd *cmd)
 		}
 		i++;
 	}
-	return (0); 
+	return (0);
 }

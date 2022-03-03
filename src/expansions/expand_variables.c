@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_variables.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 16:14:53 by agardet           #+#    #+#             */
+/*   Updated: 2022/03/03 16:15:21 by agardet          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-ssize_t		get_next_var_len(char *cmd, char **str)
+ssize_t	get_next_var_len(char *cmd, char **str)
 {
 	size_t	i;
 	size_t	j;
@@ -26,8 +37,8 @@ char	*cpy_expand(char *str, size_t size, int quote)
 {
 	size_t	i;
 	size_t	j;
-	char *expand;
-	char *buffer;
+	char	*expand;
+	char	*buffer;
 	size_t	off;
 
 	expand = malloc((size + 1) * sizeof(char));
@@ -55,11 +66,11 @@ char	*cpy_expand(char *str, size_t size, int quote)
 	return (expand);
 }
 
-int expand_variables(t_cmd *cmd)
+int	expand_variables(t_cmd *cmd)
 {
 	size_t	expanded_size;
 	size_t	i;
-	char 	*buffer;
+	char	*buffer;
 	int		quote;
 
 	i = 0;
@@ -89,5 +100,5 @@ int expand_variables(t_cmd *cmd)
 		return (-1 + (printf("Minishell : parse error : unclosed quote\n") * 0));
 	}
 	*cmd->av = cpy_expand(*cmd->av, expanded_size, 0);
-	return (0);  	  
+	return (0);
 }

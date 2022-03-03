@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environement.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 16:17:14 by agardet           #+#    #+#             */
+/*   Updated: 2022/03/03 16:18:47 by agardet          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -53,14 +64,10 @@ void	init_env(char **envp)
 	while (envp && *envp)
 	{
 		equal_pos = ft_strchr(*envp, '=');
-		var = new_env_var(
-			ft_strldup(*envp, equal_pos),
-			ft_strldup(*envp + equal_pos + 1, ft_strlen(*envp) - equal_pos - 1)
-		);
+		var = new_env_var(ft_strldup(*envp, equal_pos), \
+				ft_strldup(*envp + equal_pos + 1, \
+					ft_strlen(*envp) - equal_pos - 1));
 		add_env(var);
 		envp++;
 	}	
 }
-
-
-
