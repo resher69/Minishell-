@@ -6,7 +6,7 @@
 /*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/03 15:16:19 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/03 18:29:14 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int main(int ac, char **av, char **envp)
 	shell = malloc(sizeof(t_shell));
 	while (1)
 	{
-		usr_input = readline("Minishell$>");
+		usr_input = readline("MiniSHEEEESH$>");
 		if (usr_input[0])
 		{
 			err = split_usr_input(usr_input, shell);

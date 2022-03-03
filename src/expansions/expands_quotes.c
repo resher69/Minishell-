@@ -6,7 +6,7 @@
 /*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:14 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/03 16:16:28 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/03 18:40:41 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	expand_quotes(t_cmd *cmd)
 			while (cmd->av[i][j])
 			{
 				quote = get_quote(cmd->av[i][j]);
+				if (j == 0 && quote != QUOTE_NONE)
+					j++;
 				if ((cmd->av[i][j] != '\'' && cmd->av[i][j] != '\"') || quote != QUOTE_NONE)
 				{
 					expand[k] = cmd->av[i][j];
