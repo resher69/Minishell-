@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/04 12:36:29 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/04 16:25:31 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ int	split_usr_input(char *usr_input, t_shell *shell)
 			shell->n_cmd++;
 		i++;
 		i += skip_ifs(&usr_input[i]);
+	}
+	if (quote != QUOTE_NONE)
+	{
+		if (quote == QUOTE_SINGLE)
+			quote = get_quote('\'');
+		else
+			quote = get_quote('\"');
+		return (printf("Minishell : parse error : unclosed quote\n"));
 	}
 	cmd_tmp = malloc(sizeof(t_cmd *) * (shell->n_cmd + 1));
 	if (!cmd_tmp)
@@ -76,6 +84,8 @@ int main(int ac, char **av, char **envp)
 	t_shell	*shell;
 	char	*usr_input;
 	int		err;
+	size_t	i;
+	size_t	j;
 
 	(void)av;
 	if (ac != 1)
@@ -88,27 +98,17 @@ int main(int ac, char **av, char **envp)
 		if (usr_input[0])
 		{
 			err = split_usr_input(usr_input, shell);
-			if (!err)
+			if (err == 0)
 			{
-				size_t i = 0;
+				i = 0;
 				free(usr_input);
 				while (i < shell->n_cmd)
 				{
 					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av);
 					printf("printing argv\n");
-					while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && *shell->usr_cmd[i]->av)
-					{
-						if (strncmp(*shell->usr_cmd[i]->av, "<", 1) == 0)
-							printf("redir in simple\n");
-						else if (strncmp(*shell->usr_cmd[i]->av, "<<", 2) == 0)
-							printf("redir in double\n");
-						else if (strncmp(*shell->usr_cmd[i]->av, ">", 1) == 0)
-							printf("redir out simple\n");
-						else if (strncmp(*shell->usr_cmd[i]->av, ">>", 2) == 0)
-							printf("redir out double\n");
-						printf("|%s|\n", *shell->usr_cmd[i]->av);
-						shell->usr_cmd[i]->av++;
-					}
+					j = 0;
+					while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && shell->usr_cmd[i]->av[j])
+						printf("|%s|\n", shell->usr_cmd[i]->av[j++]);
 					i++;
 				}
 			}
@@ -116,6 +116,3 @@ int main(int ac, char **av, char **envp)
 	}
 	return (0);
 }
-
-
-//problems with quotes : "test' ou 'test"

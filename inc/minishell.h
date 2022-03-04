@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/03 15:15:23 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/04 18:19:57 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <string.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+
+
 
 # include "utils.h"
 
@@ -26,6 +30,8 @@ typedef struct s_cmd
 {
 	char	**av;
 	size_t	ac;
+	int		fd_in;
+	int		fd_out;
 }				t_cmd;
 
 typedef struct s_env_var
@@ -51,5 +57,7 @@ int		expand_words(t_cmd *cmd);
 int		expand_quotes(t_cmd *cmd);
 
 t_cmd	*expand(char *command);
+int 	redir_in_simple(t_cmd *cmd, size_t id_redir);
+int		redir_out_simple(t_cmd *cmd, size_t id_redir);
 
 #endif

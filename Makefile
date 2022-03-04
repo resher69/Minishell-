@@ -21,7 +21,9 @@ SRCS=			environement.c \
 				expand_variables.c \
 				expands_quotes.c \
 				expand.c \
-				expands_words.c
+				expands_words.c \
+				redir_in_simple.c \
+				redir_out_simple.c
 
 # Librarys (only for local archives in project folder)
 LIBRARYS	= 
