@@ -15,6 +15,8 @@ LIB_DIR		= lib
 # - use "-" if empty
 SRCS=			environement.c \
 				utils.c \
+				libft.c \
+				libft_bis.c \
 				main.c \
 				expand_variables.c \
 				expands_quotes.c \

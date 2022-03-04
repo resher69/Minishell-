@@ -6,7 +6,7 @@
 /*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:14:53 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/03 16:15:21 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/04 13:19:53 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	expand_variables(t_cmd *cmd)
 			quote = get_quote('\'');
 		else
 			quote = get_quote('\"');
+	//something might be fucked up here -> try : 'test" couple of times
 		return (-1 + (printf("Minishell : parse error : unclosed quote\n") * 0));
 	}
 	*cmd->av = cpy_expand(*cmd->av, expanded_size, 0);

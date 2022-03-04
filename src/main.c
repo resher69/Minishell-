@@ -6,7 +6,7 @@
 /*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/03 18:29:14 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/04 12:36:29 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,3 +116,6 @@ int main(int ac, char **av, char **envp)
 	}
 	return (0);
 }
+
+
+//problems with quotes : "test' ou 'test"

@@ -6,7 +6,7 @@
 /*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:17:14 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/03 16:18:47 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/03 18:46:20 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ t_env_var	*g_env = NULL;
 
 char	*get_env(char *var_name)
 {
-	t_env_var *current;
-	
+	t_env_var	*current;
+
 	current = g_env;
 	while (current)
 	{
