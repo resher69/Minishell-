@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/04 18:19:57 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/05 15:29:55 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,24 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 
-
-
 # include "utils.h"
+
+typedef enum e_masks
+{
+	E_PIPEIN = (1 << 0),
+	E_PIPEOUT = (1 << 1),
+	E_FILEIN = (1 << 2),
+	E_FILEOUT = (1 << 3),
+}			t_masks;
 
 typedef struct s_cmd
 {
+	char	flags;
 	char	**av;
 	size_t	ac;
 	int		fd_in;
 	int		fd_out;
+	int		pipe_fd[2];
 }				t_cmd;
 
 typedef struct s_env_var
@@ -56,7 +64,7 @@ int		expand_variables(t_cmd *cmd);
 int		expand_words(t_cmd *cmd);
 int		expand_quotes(t_cmd *cmd);
 
-t_cmd	*expand(char *command);
+t_cmd	*expand(char *command, size_t id_pipe_line, size_t n_cmd);
 int 	redir_in_simple(t_cmd *cmd, size_t id_redir);
 int		redir_out_simple(t_cmd *cmd, size_t id_redir);
 

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/04 16:25:31 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/05 15:30:14 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,19 @@ int main(int ac, char **av, char **envp)
 				free(usr_input);
 				while (i < shell->n_cmd)
 				{
-					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av);
-					printf("printing argv\n");
+					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av, i, shell->n_cmd);
 					j = 0;
+					printf("-> Printing argv & flags\n");
+					if (shell->usr_cmd[i]->flags & E_FILEIN)
+						printf("-> file in\n");
+					if (shell->usr_cmd[i]->flags & E_FILEOUT)
+						printf("-> file out\n");
+					if (shell->usr_cmd[i]->flags & E_PIPEIN)
+						printf("-> pipe in\n");
+					if (shell->usr_cmd[i]->flags & E_PIPEOUT)
+						printf("-> pipe out\n");
 					while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && shell->usr_cmd[i]->av[j])
-						printf("|%s|\n", shell->usr_cmd[i]->av[j++]);
+						printf("-> |%s|\n", shell->usr_cmd[i]->av[j++]);
 					i++;
 				}
 			}

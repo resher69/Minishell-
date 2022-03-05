@@ -21,8 +21,11 @@ int redir_in_simple(t_cmd *cmd, size_t id_redir)
 		cmd->fd_in = open(cmd->av[i], O_RDONLY, 0644);
 		if (cmd->fd_in < 0)
 			printf("Minishell : no such file or directory: %s\n", cmd->av[i]);
-		//else
-			//dup2...
+		else
+		{
+			cmd->flags |= E_FILEIN;
+			cmd->flags &= ~E_PIPEIN;
+		}
 		printf("redir in simple done\n");
 	}
 	else if (cmd->av[i])
@@ -30,8 +33,11 @@ int redir_in_simple(t_cmd *cmd, size_t id_redir)
 		cmd->fd_in = open(cmd->av[i] + 1, O_RDONLY, 0644);
 		if (cmd->fd_in < 0)
 			printf("Minishell : no such file or directory: %s\n", cmd->av[i] + 1);
-		//else
-			//dup2...
+		else
+		{
+			cmd->flags |= E_FILEIN;
+			cmd->flags &= ~E_PIPEIN;
+		}
 		printf("redir in simple done\n");
 	}
 	if (cmd->av[i])
