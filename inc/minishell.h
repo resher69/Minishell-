@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/05 17:55:03 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/08 19:41:57 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef enum e_masks
 
 typedef struct s_cmd
 {
+	int		valid;
 	char	flags;
 	char	**av;
 	size_t	ac;

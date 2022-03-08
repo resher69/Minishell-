@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:15:30 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/04 12:47:28 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/08 19:09:56 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,6 @@ void		ft_strlcpy(char *dst, char *src, size_t len);
 int			is_ifs(char c);
 int			is_valid_var_char(char c);
 int			skip_ifs(char *str);
+int			skip_redir(char *str);
+int			skip_car(char *str);
 #endif

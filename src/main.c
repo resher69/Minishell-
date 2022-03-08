@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/06 16:31:40 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/08 20:17:16 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ int main(int ac, char **av, char **envp)
 					exec.ac = shell->usr_cmd[i]->ac;
 					exec.fd_in = shell->usr_cmd[i]->fd_in;
 					exec.fd_out = shell->usr_cmd[i]->fd_out;
+					exec.valid = shell->usr_cmd[i]->valid;
 					ft_pipex(&exec, envp, shell);
 					i++;
 				}

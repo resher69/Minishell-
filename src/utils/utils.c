@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:20:34 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/03 18:47:43 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/08 19:18:21 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,31 @@ int	skip_ifs(char *str)
 	i = 0;
 	while (str && str[i] && is_ifs(str[i]))
 		i++;
+	return (i);
+}
+
+int	skip_redir(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i] && (str[i] == '>' || str[i] == '<'))
+		i++;
+	return (i);
+}
+
+int	skip_car(char *str)
+{
+	int	i;
+	int	quote;
+
+	i = 0;
+	if (*str)
+		quote = get_quote(*str);
+	while (str && str[i] && ((!is_ifs(str[i]) && !(str[i] == '>' || str[i] == '<')) || quote != QUOTE_NONE))
+	{
+		quote = get_quote(str[i]);
+		i++;
+	}
 	return (i);
 }

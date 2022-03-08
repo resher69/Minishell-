@@ -25,8 +25,11 @@ void	ft_child(t_cmd *const job, const int prev_in,
 		ft_dup_close((int [2]){job->fd_out, STDOUT_FILENO},
 			job->av, exec_path, locations);
 	}
-	execve(exec_path, job->av, envp);
-	ft_putstr_fd("execve failed \n", STDERR_FILENO);
+	if (job->valid)
+	{
+		execve(exec_path, job->av, envp);
+		ft_putstr_fd("execve failed \n", STDERR_FILENO);
+	}
 	ft_free_job_exit(job->av, exec_path, locations, 1);
 }
 
