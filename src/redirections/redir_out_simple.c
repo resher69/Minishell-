@@ -18,15 +18,19 @@ int redir_out_simple(t_cmd *cmd, size_t id_redir)
 	{
 		free(cmd->av[i]);
 		i++;
-		cmd->fd_out = open(cmd->av[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		if (cmd->fd_out < 0)
-			printf("Minishell : can't create file: %s\n", cmd->av[i]);
-		else
+		if (cmd->av[i])
 		{
-			cmd->flags |= E_FILEOUT;
-			cmd->flags &= ~E_PIPEOUT;
+			cmd->fd_out = open(cmd->av[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (cmd->fd_out < 0)
+				printf("Minishell : can't create file: %s\n", cmd->av[i]);
+			else
+			{
+				cmd->flags |= E_FILEOUT;
+				cmd->flags &= ~E_PIPEOUT;
+			}
 		}
-		printf("redir out simple done\n");
+		else
+			printf("Minishell : syntax error near unexpected token `newline'\n");
 	}
 	else if (cmd->av[i])
 	{
@@ -38,7 +42,6 @@ int redir_out_simple(t_cmd *cmd, size_t id_redir)
 			cmd->flags |= E_FILEOUT;
 			cmd->flags &= ~E_PIPEOUT;
 		}
-		printf("redir out simple done\n");
 	}
 	if (cmd->av[i])
 	{

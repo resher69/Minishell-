@@ -26,7 +26,7 @@ int redir_in_simple(t_cmd *cmd, size_t id_redir)
 			cmd->flags |= E_FILEIN;
 			cmd->flags &= ~E_PIPEIN;
 		}
-		printf("redir in simple done\n");
+		// printf("redir in simple done\n");
 	}
 	else if (cmd->av[i])
 	{
@@ -38,7 +38,7 @@ int redir_in_simple(t_cmd *cmd, size_t id_redir)
 			cmd->flags |= E_FILEIN;
 			cmd->flags &= ~E_PIPEIN;
 		}
-		printf("redir in simple done\n");
+		// printf("redir in simple done\n");
 	}
 	if (cmd->av[i])
 	{

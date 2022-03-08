@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:00 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/05 15:29:33 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/06 15:22:06 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_cmd	*expand(char *cmd, size_t id_pipe_line, size_t n_cmd)
 	command = malloc(sizeof(t_cmd));
 	if (!command)
 		return (NULL);
+	*command = (t_cmd){0};
 	command->av = malloc(sizeof(char *));
 	if (!command->av)
 		return (NULL);

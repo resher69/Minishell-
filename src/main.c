@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/05 15:30:14 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/06 16:31:40 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	split_usr_input(char *usr_input, t_shell *shell)
 	i = 0;
 	shell->n_cmd = 1;
 	i += skip_ifs(&usr_input[i]);
+	quote = QUOTE_NONE;
 	while (usr_input && usr_input[i])
 	{
 		if (usr_input[i] == '|' && i == 0 + (size_t)skip_ifs(usr_input))
@@ -86,6 +87,7 @@ int main(int ac, char **av, char **envp)
 	int		err;
 	size_t	i;
 	size_t	j;
+	t_cmd	exec;
 
 	(void)av;
 	if (ac != 1)
@@ -95,30 +97,48 @@ int main(int ac, char **av, char **envp)
 	while (1)
 	{
 		usr_input = readline("MiniSHEEEESH$>");
+		if (strcmp(usr_input, "exit") == 0)
+		{
+			//free all
+			free(shell);
+			free(usr_input);
+			break;	
+		}
 		if (usr_input[0])
 		{
 			err = split_usr_input(usr_input, shell);
+			exec = (t_cmd){0};
 			if (err == 0)
 			{
 				i = 0;
 				free(usr_input);
+				shell->i = 0;
 				while (i < shell->n_cmd)
 				{
 					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av, i, shell->n_cmd);
 					j = 0;
-					printf("-> Printing argv & flags\n");
-					if (shell->usr_cmd[i]->flags & E_FILEIN)
-						printf("-> file in\n");
-					if (shell->usr_cmd[i]->flags & E_FILEOUT)
-						printf("-> file out\n");
-					if (shell->usr_cmd[i]->flags & E_PIPEIN)
-						printf("-> pipe in\n");
-					if (shell->usr_cmd[i]->flags & E_PIPEOUT)
-						printf("-> pipe out\n");
-					while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && shell->usr_cmd[i]->av[j])
-						printf("-> |%s|\n", shell->usr_cmd[i]->av[j++]);
+					// // aff cmd
+					// printf("-> Printing argv & flags\n");
+					// if (shell->usr_cmd[i]->flags & E_FILEIN)
+					// 	printf("-> file in\n");
+					// if (shell->usr_cmd[i]->flags & E_FILEOUT)
+					// 	printf("-> file out\n");
+					// if (shell->usr_cmd[i]->flags & E_PIPEIN)
+					// 	printf("-> pipe in\n");
+					// if (shell->usr_cmd[i]->flags & E_PIPEOUT)
+					// 	printf("-> pipe out\n");
+					// while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && shell->usr_cmd[i]->av[j])
+					// 	printf("-> |%s|\n", shell->usr_cmd[i]->av[j++]);
+					// //
+					exec.flags = shell->usr_cmd[i]->flags;
+					exec.av = shell->usr_cmd[i]->av;
+					exec.ac = shell->usr_cmd[i]->ac;
+					exec.fd_in = shell->usr_cmd[i]->fd_in;
+					exec.fd_out = shell->usr_cmd[i]->fd_out;
+					ft_pipex(&exec, envp, shell);
 					i++;
 				}
+				ft_waitpids(shell);
 			}
 		}
 	}

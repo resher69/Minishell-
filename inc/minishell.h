@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/05 15:29:55 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/05 17:55:03 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <string.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <stdbool.h>
+# include <unistd.h>
+
 
 # include "utils.h"
 
@@ -53,6 +56,8 @@ typedef struct s_shell
 {
 	t_cmd	**usr_cmd;
 	size_t	n_cmd;
+	pid_t	pid_ar[666];
+	size_t	i;
 }				t_shell;
 
 extern t_env_var	*g_env;
@@ -67,5 +72,19 @@ int		expand_quotes(t_cmd *cmd);
 t_cmd	*expand(char *command, size_t id_pipe_line, size_t n_cmd);
 int 	redir_in_simple(t_cmd *cmd, size_t id_redir);
 int		redir_out_simple(t_cmd *cmd, size_t id_redir);
+
+void	ft_free_tab(char **tab);
+char	**get_locations(char **envp);
+char	*concat_path(char *location, char *exec);
+char	*get_exec_path(char *exec_name, char **locations);
+
+void	ft_dup_close(int fd[2], char **cmd_arg,
+			char *exec_path, char **locations);
+int		ft_safe_close(int fd);
+void	ft_free_job_exit(char **cmd_arg, char *exec_path,
+			char **locations, int err);
+int		ft_waitpids(t_shell *shell);
+void	ft_pipex(t_cmd *cmd, char **envp, t_shell *shell);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif

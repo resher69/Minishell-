@@ -23,7 +23,9 @@ SRCS=			environement.c \
 				expand.c \
 				expands_words.c \
 				redir_in_simple.c \
-				redir_out_simple.c
+				redir_out_simple.c \
+				pipex_utils.c \
+				pipex.c
 
 # Librarys (only for local archives in project folder)
 LIBRARYS	= 
