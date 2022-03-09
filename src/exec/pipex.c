@@ -5,26 +5,28 @@ void	ft_child(t_cmd *const job, const int prev_in,
 {
 	if (exec_path == NULL)
 		ft_free_job_exit(job->av, exec_path, locations, 1);
-	if (job->flags & E_PIPEIN)
-		ft_dup_close((int [2]){prev_in, STDIN_FILENO},
-			job->av, exec_path, locations);
-	else if (job->flags & E_FILEIN)
+	if (job->flags & E_FILEIN)
 	{
 		if (job->fd_in < 0)
 			ft_free_job_exit(job->av, exec_path, locations, 1);
 		ft_dup_close((int [2]){job->fd_in, STDIN_FILENO},
 			job->av, exec_path, locations);
 	}
-	if (job->flags & E_PIPEOUT)
-		ft_dup_close((int [2]){job->pipe_fd[1], STDOUT_FILENO},
+	else if (job->flags & E_PIPEIN)
+		ft_dup_close((int [2]){prev_in, STDIN_FILENO},
 			job->av, exec_path, locations);
-	else if (job->flags & E_FILEOUT)
+	if (job->flags & E_FILEOUT)
 	{
 		if (job->fd_out < 0)
 			ft_free_job_exit(job->av, exec_path, locations, 1);
 		ft_dup_close((int [2]){job->fd_out, STDOUT_FILENO},
 			job->av, exec_path, locations);
 	}
+	else if (job->flags & E_PIPEOUT)
+		ft_dup_close((int [2]){job->pipe_fd[1], STDOUT_FILENO},
+			job->av, exec_path, locations);
+	signal(SIGINT, NULL);
+	signal(SIGQUIT, NULL);
 	if (job->valid)
 	{
 		execve(exec_path, job->av, envp);
@@ -59,11 +61,13 @@ void ft_pipex(t_cmd *cmd, char **envp, t_shell *shell)
     char        **locations;
 
 	err = 0;
+	exec_path = NULL;
     //modifie get_location to work with chained list
     locations = get_locations(envp);
 	if (cmd->flags & E_PIPEOUT)
 		pipe(cmd->pipe_fd);
-	exec_path = get_exec_path(*cmd->av, locations);
+	if (*cmd->av)
+		exec_path = get_exec_path(*cmd->av, locations);
 	pid = fork();
 	if (pid < 0)
 	{

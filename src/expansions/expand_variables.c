@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:14:53 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/04 14:21:11 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/09 17:49:21 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ ssize_t	get_next_var_len(char *cmd, char **str)
 	return (i);
 }
 
-char	*cpy_expand(char *str, size_t size, int quote)
+char	*cpy_expand(char *str, size_t size, int quote, int heredoc)
 {
 	size_t	i;
 	size_t	j;
@@ -47,7 +47,7 @@ char	*cpy_expand(char *str, size_t size, int quote)
 	while (str && str[i])
 	{
 		quote = get_quote(str[i]);
-		if (str[i] != '$' || quote == QUOTE_SINGLE)
+		if (str[i] != '$' || (quote == QUOTE_SINGLE && !heredoc))
 		{
 			expand[j] = str[i];
 			i++;
@@ -66,7 +66,7 @@ char	*cpy_expand(char *str, size_t size, int quote)
 	return (expand);
 }
 
-int	expand_variables(t_cmd *cmd)
+int	expand_variables(t_cmd *cmd, int heredoc)
 {
 	size_t	expanded_size;
 	size_t	i;
@@ -78,7 +78,7 @@ int	expand_variables(t_cmd *cmd)
 	while (*cmd->av && (*cmd->av)[i])
 	{
 		quote = get_quote((*cmd->av)[i]);
-		if ((*cmd->av)[i] != '$' || quote == QUOTE_SINGLE)
+		if ((*cmd->av)[i] != '$' || (quote == QUOTE_SINGLE && !heredoc))
 		{
 			i++;
 			expanded_size++;
@@ -91,6 +91,6 @@ int	expand_variables(t_cmd *cmd)
 			free(buffer);
 		}
 	}
-	*cmd->av = cpy_expand(*cmd->av, expanded_size, 0);
+	*cmd->av = cpy_expand(*cmd->av, expanded_size, 0, heredoc);
 	return (0);
 }

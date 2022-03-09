@@ -27,10 +27,7 @@ int redir_out_simple(t_cmd *cmd, size_t id_redir)
 				printf("Minishell : can't create file: %s\n", cmd->av[i]);
 			}	
 			else
-			{
 				cmd->flags |= E_FILEOUT;
-				cmd->flags &= ~E_PIPEOUT;
-			}
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:00 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/08 19:56:21 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/09 17:45:38 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,27 @@ t_cmd	*expand(char *cmd, size_t id_pipe_line, size_t n_cmd)
 	command->valid = 1;
 	set_flags(command, id_pipe_line, n_cmd);
 	command->ac = 0;
-	if (expand_variables(command) == -1)
+	if (expand_variables(command, 0) == -1)
 		return (NULL);
 	expand_words(command);
 	i = 0;
 	while (i < command->ac)
 	{
-		if (ft_strcmp(command->av[i], "<") == 0)
+		if (ft_strcmp(command->av[i], "<<") == 0)
+		{
+			i = redir_in_double(command, i);
+		}
+		else if (ft_strcmp(command->av[i], "<") == 0)
 		{
 			i = redir_in_simple(command, i);
 		}
-		else if (ft_strcmp(command->av[i], "<<") == 0)
+		else if (ft_strcmp(command->av[i], ">>") == 0)
 		{
-			printf("redir in double\n");
-			i++;
+			i = redir_out_double(command, i);
 		}
 		else if (ft_strcmp(command->av[i], ">") == 0)
 		{
 			i = redir_out_simple(command, i);
-		}
-		else if (ft_strcmp(command->av[i], ">>") == 0)
-		{
-			printf("redir out double\n");
-			i++;
 		}
 		else
 			i++;

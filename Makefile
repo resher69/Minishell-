@@ -24,6 +24,9 @@ SRCS=			environement.c \
 				expands_words.c \
 				redir_in_simple.c \
 				redir_out_simple.c \
+				redir_out_double.c \
+				heredoc.c \
+				signal.c \
 				pipex_utils.c \
 				pipex.c
 

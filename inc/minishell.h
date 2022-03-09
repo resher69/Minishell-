@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/08 19:41:57 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/09 18:47:47 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 # include <unistd.h>
-
+# include <signal.h>
+# include <sys/param.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <dirent.h>
+# include <termios.h>
+# include <errno.h>
 
 # include "utils.h"
 
@@ -66,13 +72,15 @@ extern t_env_var	*g_env;
 void	init_env(char **envp);
 char	*get_env(char *var_name);
 
-int		expand_variables(t_cmd *cmd);
+int		expand_variables(t_cmd *cmd, int heredoc);
 int		expand_words(t_cmd *cmd);
 int		expand_quotes(t_cmd *cmd);
 
 t_cmd	*expand(char *command, size_t id_pipe_line, size_t n_cmd);
 int 	redir_in_simple(t_cmd *cmd, size_t id_redir);
+int		redir_in_double(t_cmd *cmd, size_t id_redir);
 int		redir_out_simple(t_cmd *cmd, size_t id_redir);
+int 	redir_out_double(t_cmd *cmd, size_t id_redir);
 
 void	ft_free_tab(char **tab);
 char	**get_locations(char **envp);
@@ -87,5 +95,8 @@ void	ft_free_job_exit(char **cmd_arg, char *exec_path,
 int		ft_waitpids(t_shell *shell);
 void	ft_pipex(t_cmd *cmd, char **envp, t_shell *shell);
 void	ft_putstr_fd(char *s, int fd);
+void	sig_int(int sig);
+void	heredoc_sig_int(int sig);
+// void	sig_child(int sig);
 
 #endif

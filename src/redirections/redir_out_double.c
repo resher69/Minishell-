@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int redir_in_simple(t_cmd *cmd, size_t id_redir)
+int redir_out_double(t_cmd *cmd, size_t id_redir)
 {
 	size_t  i;
 	size_t  j;
@@ -20,14 +20,14 @@ int redir_in_simple(t_cmd *cmd, size_t id_redir)
 		i++;
 		if (cmd->av[i])
 		{
-			cmd->fd_in = open(cmd->av[i], O_RDONLY, 0644);
-			if (cmd->fd_in < 0)
+			cmd->fd_out = open(cmd->av[i], O_CREAT | O_WRONLY | O_APPEND, 0644);
+			if (cmd->fd_out < 0)
 			{
 				cmd->valid = 0;
-				printf("Minishell : no such file or directory: %s\n", cmd->av[i]);
-			}
+				printf("Minishell : can't create file: %s\n", cmd->av[i]);
+			}	
 			else
-				cmd->flags |= E_FILEIN;
+				cmd->flags |= E_FILEOUT;
 		}
 		else
 		{
