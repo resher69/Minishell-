@@ -54,7 +54,7 @@ void	ft_child(t_cmd *const job, const int prev_in,
 			job->av, exec_path, shell->locations);
 	}
 	else if (job->flags & E_PIPEOUT)
-		ft_dup_close((int [2]){job->pipe_fd[1], STDOUT_FILENO},
+		ft_dup_close((int [2]){shell->pipe_fd[1], STDOUT_FILENO},
 			job->av, exec_path, shell->locations);
 	if (job->valid)
 	{
@@ -70,7 +70,7 @@ int	ft_parent(t_cmd *const job, pid_t pid, const int prev_in, t_shell *shell)
 
 	err = 0;
 	if (job->flags & E_PIPEOUT)
-		err += ft_safe_close(job->pipe_fd[1]);
+		err += ft_safe_close(shell->pipe_fd[1]);
 	else if (job->flags & E_FILEOUT && job->fd_out > 0)
 		err += ft_safe_close(job->fd_out);
 	if (job->flags & E_PIPEIN)
@@ -83,7 +83,7 @@ int	ft_parent(t_cmd *const job, pid_t pid, const int prev_in, t_shell *shell)
 
 void ft_pipex(t_cmd *cmd, t_shell *shell)
 {
-    const int	prev_in = cmd->pipe_fd[0];
+    const int	prev_in = shell->pipe_fd[0];
 	pid_t		pid;
 	char		*exec_path;
 	int			err;
@@ -92,7 +92,7 @@ void ft_pipex(t_cmd *cmd, t_shell *shell)
 	exec_path = NULL;
     shell->locations = get_locations(list_to_char(shell->env));
 	if (cmd->flags & E_PIPEOUT)
-		pipe(cmd->pipe_fd);
+		pipe(shell->pipe_fd);
 	if (*cmd->av)
 		exec_path = get_exec_path(*cmd->av, shell->locations);
 	pid = fork();

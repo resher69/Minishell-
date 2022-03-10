@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/10 20:23:50 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 20:33:38 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_cmd
 	size_t	ac;
 	int		fd_in;
 	int		fd_out;
-	int		pipe_fd[2];
 }				t_cmd;
 
 typedef struct s_env_var
@@ -65,6 +64,7 @@ typedef struct s_shell
 	size_t				n_cmd;
 	pid_t				pid_ar[666];
 	size_t				i;
+	int					pipe_fd[2];
 	struct termios		old_term;
 	struct termios		new_term;
 	t_env_var			*env;
