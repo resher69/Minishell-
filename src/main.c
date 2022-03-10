@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/08 20:17:16 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 20:21:26 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,21 @@ int	split_usr_input(char *usr_input, t_shell *shell)
 	return (0);
 }
 
+static void	set_new_terminal(t_shell *s)
+{
+	if (tcgetattr(STDIN_FILENO, &s->old_term) == -1)
+		;
+		// print_error("termios: ", NULL, NULL, errno);
+	s->new_term = s->old_term;
+	s->new_term.c_cc[VQUIT] = 0;
+	s->new_term.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &s->new_term) == -1)
+		;
+		// print_error("termios: ", NULL, NULL, errno);
+	signal(SIGINT, &sig_int);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 int main(int ac, char **av, char **envp)
 {
 	t_shell	*shell;
@@ -92,20 +107,30 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 	if (ac != 1)
 		return (printf("No arg needed\n") * 0 + 1);
-	init_env(envp);
 	shell = malloc(sizeof(t_shell));
+	init_env(envp, shell);
+	set_new_terminal(shell);
 	while (1)
 	{
 		usr_input = readline("MiniSHEEEESH$>");
-		if (strcmp(usr_input, "exit") == 0)
+		if (!usr_input)
 		{
 			//free all
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 			free(shell);
 			free(usr_input);
 			break;	
 		}
+		add_history(usr_input);
 		if (usr_input[0])
 		{
+			if (strcmp(usr_input, "exit") == 0)
+			{
+				//free all
+				free(shell);
+				free(usr_input);
+				break;
+			}
 			err = split_usr_input(usr_input, shell);
 			exec = (t_cmd){0};
 			if (err == 0)
@@ -115,7 +140,7 @@ int main(int ac, char **av, char **envp)
 				shell->i = 0;
 				while (i < shell->n_cmd)
 				{
-					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av, i, shell->n_cmd);
+					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av, i, shell->n_cmd, shell);
 					j = 0;
 					// // aff cmd
 					// printf("-> Printing argv & flags\n");
@@ -136,7 +161,15 @@ int main(int ac, char **av, char **envp)
 					exec.fd_in = shell->usr_cmd[i]->fd_in;
 					exec.fd_out = shell->usr_cmd[i]->fd_out;
 					exec.valid = shell->usr_cmd[i]->valid;
-					ft_pipex(&exec, envp, shell);
+					if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->old_term) == -1)
+						;
+						// print_error("termios: ", NULL, NULL, errno);
+					signal(SIGINT, SIG_IGN);
+					ft_pipex(&exec, shell);
+					if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->new_term) == -1)
+						;
+						// print_error("termios: ", NULL, NULL, errno);
+					signal(SIGINT, &sig_int);
 					i++;
 				}
 				ft_waitpids(shell);

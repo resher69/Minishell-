@@ -3,22 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   environement.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:17:14 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/03 18:46:20 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 19:56:56 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env_var	*g_env = NULL;
-
-char	*get_env(char *var_name)
+char	*get_env(char *var_name, t_shell *shell)
 {
 	t_env_var	*current;
 
-	current = g_env;
+	current = shell->env;
 	while (current)
 	{
 		if (ft_strcmp(current->name, var_name) == 0)
@@ -41,22 +39,22 @@ t_env_var	*new_env_var(char *name, char *value)
 	return (new);
 }
 
-void	add_env(t_env_var *new)
+void	add_env(t_env_var *new, t_shell *shell)
 {
 	t_env_var	*current;
 
-	if (g_env)
+	if (shell->env)
 	{
-		current = g_env;
+		current = shell->env;
 		while (current && current->next)
 			current = current->next;
 		current->next = new;
 	}
 	else
-		g_env = new;
+		shell->env = new;
 }
 
-void	init_env(char **envp)
+void	init_env(char **envp, t_shell *shell)
 {
 	t_env_var	*var;
 	size_t		equal_pos;
@@ -67,7 +65,7 @@ void	init_env(char **envp)
 		var = new_env_var(ft_strldup(*envp, equal_pos), \
 				ft_strldup(*envp + equal_pos + 1, \
 					ft_strlen(*envp) - equal_pos - 1));
-		add_env(var);
+		add_env(var, shell);
 		envp++;
 	}	
 }

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:00 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/09 17:45:38 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 20:24:10 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	set_flags(t_cmd *cmd, size_t id_pipe_line, size_t n_cmd)
 		cmd->flags |= (E_PIPEIN | E_PIPEOUT);
 }
 
-t_cmd	*expand(char *cmd, size_t id_pipe_line, size_t n_cmd)
+t_cmd	*expand(char *cmd, size_t id_pipe_line, size_t n_cmd, t_shell *shell)
 {
 	t_cmd	*command;
 	size_t	i;
@@ -45,7 +45,7 @@ t_cmd	*expand(char *cmd, size_t id_pipe_line, size_t n_cmd)
 	command->valid = 1;
 	set_flags(command, id_pipe_line, n_cmd);
 	command->ac = 0;
-	if (expand_variables(command, 0) == -1)
+	if (expand_variables(command, 0, shell) == -1)
 		return (NULL);
 	expand_words(command);
 	i = 0;
@@ -53,7 +53,7 @@ t_cmd	*expand(char *cmd, size_t id_pipe_line, size_t n_cmd)
 	{
 		if (ft_strcmp(command->av[i], "<<") == 0)
 		{
-			i = redir_in_double(command, i);
+			i = redir_in_double(command, i, shell);
 		}
 		else if (ft_strcmp(command->av[i], "<") == 0)
 		{

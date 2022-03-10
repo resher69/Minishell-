@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/09 18:47:47 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 20:23:50 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,26 @@ typedef struct s_env_var
 
 typedef struct s_shell
 {
-	t_cmd	**usr_cmd;
-	size_t	n_cmd;
-	pid_t	pid_ar[666];
-	size_t	i;
+	t_cmd				**usr_cmd;
+	size_t				n_cmd;
+	pid_t				pid_ar[666];
+	size_t				i;
+	struct termios		old_term;
+	struct termios		new_term;
+	t_env_var			*env;
+	char				**locations;
 }				t_shell;
 
-extern t_env_var	*g_env;
+void	init_env(char **envp, t_shell *shell);
+char	*get_env(char *var_name, t_shell *shell);
 
-void	init_env(char **envp);
-char	*get_env(char *var_name);
-
-int		expand_variables(t_cmd *cmd, int heredoc);
+int		expand_variables(t_cmd *cmd, int heredoc, t_shell *shell);
 int		expand_words(t_cmd *cmd);
 int		expand_quotes(t_cmd *cmd);
 
-t_cmd	*expand(char *command, size_t id_pipe_line, size_t n_cmd);
+t_cmd	*expand(char *command, size_t id_pipe_line, size_t n_cmd, t_shell *shell);
 int 	redir_in_simple(t_cmd *cmd, size_t id_redir);
-int		redir_in_double(t_cmd *cmd, size_t id_redir);
+int		redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell);
 int		redir_out_simple(t_cmd *cmd, size_t id_redir);
 int 	redir_out_double(t_cmd *cmd, size_t id_redir);
 
@@ -93,10 +95,11 @@ int		ft_safe_close(int fd);
 void	ft_free_job_exit(char **cmd_arg, char *exec_path,
 			char **locations, int err);
 int		ft_waitpids(t_shell *shell);
-void	ft_pipex(t_cmd *cmd, char **envp, t_shell *shell);
+void	ft_pipex(t_cmd *cmd, t_shell *shell);
 void	ft_putstr_fd(char *s, int fd);
 void	sig_int(int sig);
 void	heredoc_sig_int(int sig);
-// void	sig_child(int sig);
+char	*ft_strjoin(char *s1, char *s2, int alloc_args);
+void	sig_child(int sig);
 
 #endif

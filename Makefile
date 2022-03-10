@@ -38,7 +38,7 @@ CPP_FLAGS	=	-Wextra -Wall -lreadline -g3
 #-fsanitize=address
 CPP_IFLAGS	=	
 
-CPP_LFLAGS	= 
+CPP_LFLAGS	= -L .brew/opt/readline/lib -I .brew/opt/readline/include
 
 # Fancy prefixes 
 PREFIX_PROJECT=[\033[1;32m$(NAME)\033[0m]

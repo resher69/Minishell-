@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 14:08:46 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/06 16:33:21 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 20:04:05 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,20 @@ int	ft_waitpids(t_shell *shell)
 	size_t	i;
 	int		ret;
 	int		wstatus;
+	int		sig;
 
 	i = 0;
+	sig = 0;
 	while (i < shell->i)
 	{
 		waitpid(shell->pid_ar[i++], &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			ret = WEXITSTATUS(wstatus);
+		if (WIFSIGNALED(wstatus) && !sig)
+		{
+			sig_child(WTERMSIG(wstatus));
+			sig = 1;
+		}
 	}
 	return (ret);
 }
@@ -187,12 +194,22 @@ void	ft_free_tab(char **tab)
 
 char	**get_locations(char **envp)
 {
-	while (envp && *envp)
+	int	i;
+
+	i = 0;
+	while (envp && envp[i])
 	{
-		if (strncmp(*envp, "PATH=", 5) == 0)
-			return (ft_split(*envp + 5, ':'));
-		envp++;
+		if (strncmp(envp[i], "PATH=", 5) == 0)
+			return (ft_split(envp[i] + 5, ':'));
+		i++;
 	}
+	i = 0;
+	while (envp && envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
 	return (NULL);
 }
 

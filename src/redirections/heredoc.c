@@ -58,7 +58,7 @@ char	*ft_strjoin(char *s1, char *s2, int alloc_args)
 	return (new);
 }
 
-static char	*heredoc_loop(char *stop)
+static char	*heredoc_loop(char *stop, t_shell *shell)
 {
 	char	*line;
 	char	*content;
@@ -76,7 +76,7 @@ static char	*heredoc_loop(char *stop)
 		if (!line || !ft_strcmp(line, stop))
 			break ;
         *tmp->av = line;
-		expand_variables(tmp, 1);
+		expand_variables(tmp, 1, shell);
         line = *tmp->av;
 		content = ft_strjoin(content, line, 3);
 		if (!content)
@@ -88,11 +88,11 @@ static char	*heredoc_loop(char *stop)
 	return (content);
 }
 
-static void	heredoc(char *stop, int pipe_fd[2])
+static void	heredoc(char *stop, int pipe_fd[2], t_shell *shell)
 {
 	char	*content;
 
-	content = heredoc_loop(stop);
+	content = heredoc_loop(stop, shell);
 	if (content)
 		ft_putstr_fd(content, pipe_fd[STDOUT_FILENO]);
 	free(content);
@@ -104,7 +104,7 @@ static void	heredoc(char *stop, int pipe_fd[2])
 	}
 }
 
-static void	heredoc_process_init(char *stop, int pipe_fd[2])
+static void	heredoc_process_init(char *stop, int pipe_fd[2], t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
@@ -118,7 +118,7 @@ static void	heredoc_process_init(char *stop, int pipe_fd[2])
 	else if (pid == 0)
 	{
 		signal(SIGINT, &heredoc_sig_int);
-		heredoc(stop, pipe_fd);
+		heredoc(stop, pipe_fd, shell);
 		// free_all(s, 1);
 		// exit(g_error_number);
         exit(1);
@@ -132,7 +132,7 @@ static void	heredoc_process_init(char *stop, int pipe_fd[2])
 	// 	g_error_number = WEXITSTATUS(status);
 }
 
-int	heredoc_handler(t_cmd *current, char *stop)
+int	heredoc_handler(t_cmd *current, char *stop, t_shell *shell)
 {
 	int		pipe_fd[2];
 
@@ -143,7 +143,7 @@ int	heredoc_handler(t_cmd *current, char *stop)
 		return (-1);
 	}
 	signal(SIGINT, SIG_IGN);
-	heredoc_process_init(stop, pipe_fd);
+	heredoc_process_init(stop, pipe_fd, shell);
 	signal(SIGINT, &sig_int);
 	// if (g_error_number)
 	// {
@@ -160,7 +160,7 @@ int	heredoc_handler(t_cmd *current, char *stop)
 	return (0);
 }
 
-int redir_in_double(t_cmd *cmd, size_t id_redir)
+int redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
 {
 	size_t  i;
 	size_t  j;
@@ -180,7 +180,7 @@ int redir_in_double(t_cmd *cmd, size_t id_redir)
 		i++;
 		if (cmd->av[i])
 		{
-			heredoc_handler(cmd, cmd->av[i]);
+			heredoc_handler(cmd, cmd->av[i], shell);
             if (cmd->fd_in < 0)
 			{
 				cmd->valid = 0;
