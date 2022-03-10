@@ -28,7 +28,14 @@ SRCS=			environement.c \
 				heredoc.c \
 				signal.c \
 				pipex_utils.c \
-				pipex.c
+				pipex.c \
+				bi_cd.c \
+				bi_pwd.c \
+				bi_export.c \
+				bi_unset.c \
+				bi_env.c \
+				bi_exit.c \
+				bi_echo.c
 
 # Librarys (only for local archives in project folder)
 LIBRARYS	= 

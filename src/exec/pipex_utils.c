@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 14:08:46 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/10 20:04:05 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 20:44:59 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,11 +231,32 @@ char	*concat_path(char *location, char *exec)
 	return (out - size);
 }
 
+int		is_builtin(char *str)
+{
+	if (!ft_strcmp(str, "echo"))
+		return (1);
+	else if (!ft_strcmp(str, "cd"))
+		return (1);
+	else if (!ft_strcmp(str, "pwd"))
+		return (1);
+	else if (!ft_strcmp(str, "export"))
+		return (1);
+	else if (!ft_strcmp(str, "unset"))
+		return (1);
+	else if (!ft_strcmp(str, "env"))
+		return (1);
+	else if (!ft_strcmp(str, "exit"))
+		return (1);
+	return (0);
+}
+
 char	*get_exec_path(char *exec_name, char **locations)
 {
 	char	*buf;
 	int		fd_buf;
 
+	if (is_builtin(exec_name))
+		return (ft_strldup(exec_name, ft_strlen(exec_name)));
 	if (*exec_name)
 	{
 		if (strncmp(exec_name, "./", 2) == 0)
@@ -260,11 +281,8 @@ char	*get_exec_path(char *exec_name, char **locations)
 			locations++;
 		}
 	}
-	if (strcmp(exec_name, "exit"))
-	{
-		ft_putstr_fd("Minishell : command not found : ", STDERR_FILENO);
-		ft_putstr_fd(exec_name, STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-	}
+	ft_putstr_fd("Minishell : command not found : ", STDERR_FILENO);
+	ft_putstr_fd(exec_name, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	return (NULL);
 }

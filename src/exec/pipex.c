@@ -29,6 +29,27 @@ char **list_to_char(t_env_var *env)
 	return (envp);
 }
 
+void	exec_builtins(char *exec_path, char **av, t_shell *shell)
+{
+	if (!ft_strcmp(exec_path, "echo"))
+		bi_echo(av, shell);
+	else if (!ft_strcmp(exec_path, "cd"))
+		bi_cd(av, shell);
+	else if (!ft_strcmp(exec_path, "pwd"))
+		bi_pwd(shell);
+	else if (!ft_strcmp(exec_path, "export"))
+		bi_export(shell);
+	else if (!ft_strcmp(exec_path, "unset"))
+		bi_unset(shell);
+	else if (!ft_strcmp(exec_path, "env"))
+		bi_env(shell);
+	else if (!ft_strcmp(exec_path, "exit"))
+		bi_exit(shell);
+	//free
+	//exit(g_error_number)
+	exit(1);
+}
+
 void	ft_child(t_cmd *const job, const int prev_in,
 				char *exec_path, t_shell *shell)
 {
@@ -58,6 +79,8 @@ void	ft_child(t_cmd *const job, const int prev_in,
 			job->av, exec_path, shell->locations);
 	if (job->valid)
 	{
+		if (is_builtin(exec_path))
+			exec_builtins(exec_path, job->av, shell);
 		execve(exec_path, job->av, list_to_char(shell->env));
 		ft_putstr_fd("execve failed \n", STDERR_FILENO);
 	}

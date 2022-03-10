@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/10 20:33:38 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 21:07:29 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,13 @@ void	sig_int(int sig);
 void	heredoc_sig_int(int sig);
 char	*ft_strjoin(char *s1, char *s2, int alloc_args);
 void	sig_child(int sig);
+int		is_builtin(char *str);
+void	bi_echo(char **av, t_shell *shell);
+void	bi_env(t_shell *shell);
+void	bi_exit(t_shell *shell);
+void	bi_export(t_shell *shell);
+void	bi_pwd(t_shell *shell);
+void	bi_unset(t_shell *shell);
+void	bi_cd(char **av, t_shell *shell);
 
 #endif
