@@ -38,7 +38,7 @@ void	exec_builtins(char *exec_path, char **av, t_shell *shell)
 	else if (!ft_strcmp(exec_path, "pwd"))
 		bi_pwd(shell);
 	else if (!ft_strcmp(exec_path, "export"))
-		bi_export(shell, av, 1);
+		bi_export(shell, av);
 	else if (!ft_strcmp(exec_path, "unset"))
 		bi_unset(shell);
 	else if (!ft_strcmp(exec_path, "env"))

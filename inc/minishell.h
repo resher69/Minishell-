@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 15:27:32 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 16:20:12 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ void	heredoc_sig_int(int sig);
 char	*ft_strjoin(char *s1, char *s2, int alloc_args);
 void	sig_child(int sig);
 int		is_builtin(char *str);
-void	bi_echo(char **av, int fd);
-void	bi_envbi_env(t_shell *shell, int fd);
+void	bi_echo(char **av, t_shell *shell);
+void	bi_env(t_shell *shell);
 void	bi_exit(t_shell *shell);
-void	bi_export(t_shell *shell, char **av, int fd);
+void	bi_export(t_shell *shell, char **av);
 void	bi_pwd(t_shell *shell);
 void	bi_unset(t_shell *shell);
 void	bi_cd(char **av, t_shell *shell);

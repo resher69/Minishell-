@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   bi_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 12:29:10 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 15:27:10 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 16:18:59 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	bi_env(t_shell *shell, int fd)
+void	bi_env(t_shell *shell)
 {
 	t_env_var	*elem;
 
@@ -22,9 +22,9 @@ void	bi_env(t_shell *shell, int fd)
 	{
 		if (elem->value)
 		{
-			ft_putstr_fd(elem->name, fd);
-			ft_putstr_fd(elem->value, fd);
-			ft_putstr_fd("\n", fd);
+			ft_putstr_fd(elem->name, 1);
+			ft_putstr_fd(elem->value, 1);
+			ft_putstr_fd("\n", 1);
 		}
 		elem = elem->next;
 	}

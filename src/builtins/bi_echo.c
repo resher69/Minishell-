@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 12:17:31 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 12:17:34 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 16:19:48 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	check_option_n(char *arg)
 	return (1);
 }
 
-void	bi_echo(char **av, int fd)
+void	bi_echo(char **av, t_shell *shell)
 {
 	size_t	i;
 	bool	option;
@@ -45,11 +45,11 @@ void	bi_echo(char **av, int fd)
 		}
 		while (av[i])
 		{
-			ft_putstr_fd(av[i], fd);
+			ft_putstr_fd(av[i], 1);
 			if (av[++i])
-				ft_putchar_fd(' ', fd);
+				ft_putstr_fd(" ", 1);
 		}
 	}
 	if (!option)
-		ft_putchar_fd('\n', fd);
+		ft_putstr_fd("\n", 1);
 }
