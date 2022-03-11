@@ -6,7 +6,7 @@
 /*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 14:56:58 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 15:27:32 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_shell
 	int					pipe_fd[2];
 	struct termios		old_term;
 	struct termios		new_term;
-	t_env_var			**env;
+	t_env_var			*env;
 	size_t				env_size;
 	char				**locations;
 }				t_shell;
@@ -86,34 +86,30 @@ int		redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell);
 int		redir_out_simple(t_cmd *cmd, size_t id_redir);
 int 	redir_out_double(t_cmd *cmd, size_t id_redir);
 
-void		ft_free_tab(char **tab);
-char		**get_locations(char **envp);
-char		*concat_path(char *location, char *exec);
-char		*get_exec_path(char *exec_name, char **locations);
+void	ft_free_tab(char **tab);
+char	**get_locations(char **envp);
+char	*concat_path(char *location, char *exec);
+char	*get_exec_path(char *exec_name, char **locations);
 
-void		ft_dup_close(int fd[2], char **cmd_arg,
-				char *exec_path, char **locations);
-int			ft_safe_close(int fd);
-void		ft_free_job_exit(char **cmd_arg, char *exec_path,
-				char **locations, int err);
-int			ft_waitpids(t_shell *shell);
-void		ft_pipex(t_cmd *cmd, t_shell *shell);
-void		ft_putstr_fd(char *s, int fd);
-void		sig_int(int sig);
-void		heredoc_sig_int(int sig);
-char		*ft_strjoin(char *s1, char *s2, int alloc_args);
-void		sig_child(int sig);
-int			is_builtin(char *str);
-void		bi_echo(char **av, int fd);
-void		bi_env(t_shell *shell, int fd);
-void		bi_exit(t_shell *shell);
-void		bi_export(t_shell *shell, char **av, int fd);
-void		env_del(t_shell *shell, t_env_var *elem);
-int			env_new(t_shell *shell, char *var);
-void		env_clear(t_shell *shell);
-t_env_var	*find_env_var(t_shell *shell, char *name);
-void		bi_pwd(t_shell *shell);
-void		bi_unset(t_shell *shell);
-void		bi_cd(char **av, t_shell *shell);
+void	ft_dup_close(int fd[2], char **cmd_arg,
+			char *exec_path, char **locations);
+int		ft_safe_close(int fd);
+void	ft_free_job_exit(char **cmd_arg, char *exec_path,
+			char **locations, int err);
+int		ft_waitpids(t_shell *shell);
+void	ft_pipex(t_cmd *cmd, t_shell *shell);
+void	ft_putstr_fd(char *s, int fd);
+void	sig_int(int sig);
+void	heredoc_sig_int(int sig);
+char	*ft_strjoin(char *s1, char *s2, int alloc_args);
+void	sig_child(int sig);
+int		is_builtin(char *str);
+void	bi_echo(char **av, int fd);
+void	bi_envbi_env(t_shell *shell, int fd);
+void	bi_exit(t_shell *shell);
+void	bi_export(t_shell *shell, char **av, int fd);
+void	bi_pwd(t_shell *shell);
+void	bi_unset(t_shell *shell);
+void	bi_cd(char **av, t_shell *shell);
 
 #endif
