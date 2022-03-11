@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 16:20:12 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 18:41:40 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ typedef struct s_shell
 	char				**locations;
 }				t_shell;
 
+int		g_wstatus;
+
 void	init_env(char **envp, t_shell *shell);
 char	*get_env(char *var_name, t_shell *shell);
 
@@ -91,12 +93,13 @@ char	**get_locations(char **envp);
 char	*concat_path(char *location, char *exec);
 char	*get_exec_path(char *exec_name, char **locations);
 
+char	*ft_nbtobase(long long nb, char *base);
 void	ft_dup_close(int fd[2], char **cmd_arg,
 			char *exec_path, char **locations);
 int		ft_safe_close(int fd);
 void	ft_free_job_exit(char **cmd_arg, char *exec_path,
 			char **locations, int err);
-int		ft_waitpids(t_shell *shell);
+void	ft_waitpids(t_shell *shell);
 void	ft_pipex(t_cmd *cmd, t_shell *shell);
 void	ft_putstr_fd(char *s, int fd);
 void	sig_int(int sig);
@@ -111,5 +114,6 @@ void	bi_export(t_shell *shell, char **av);
 void	bi_pwd(t_shell *shell);
 void	bi_unset(t_shell *shell);
 void	bi_cd(char **av, t_shell *shell);
+void	print_error(char *cmd, char *value, char *error, int status);
 
 #endif

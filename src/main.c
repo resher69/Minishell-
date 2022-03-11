@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/10 20:21:26 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 20:28:35 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,30 @@ int	split_usr_input(char *usr_input, t_shell *shell)
 static void	set_new_terminal(t_shell *s)
 {
 	if (tcgetattr(STDIN_FILENO, &s->old_term) == -1)
-		;
-		// print_error("termios: ", NULL, NULL, errno);
+		print_error("termios: ", NULL, NULL, errno);
 	s->new_term = s->old_term;
 	s->new_term.c_cc[VQUIT] = 0;
 	s->new_term.c_lflag &= ~ECHOCTL;
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &s->new_term) == -1)
-		;
-		// print_error("termios: ", NULL, NULL, errno);
+		print_error("termios: ", NULL, NULL, errno);
 	signal(SIGINT, &sig_int);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+static void	args_checker(int argc, char **argv)
+{
+	(void)argv;
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO)
+		|| !isatty(STDERR_FILENO))
+	{
+		print_error(NULL, NULL, "not in a terminal\n", EXIT_FAILURE);
+		exit(g_wstatus);
+	}
+	if (argc != 1)
+	{
+		print_error(NULL, NULL, NULL, E2BIG);
+		exit(g_wstatus);
+	}
 }
 
 int main(int ac, char **av, char **envp)
@@ -102,13 +116,12 @@ int main(int ac, char **av, char **envp)
 	int		err;
 	size_t	i;
 	size_t	j;
-	t_cmd	exec;
 
 	(void)av;
-	if (ac != 1)
-		return (printf("No arg needed\n") * 0 + 1);
+	args_checker(ac, av);
 	shell = malloc(sizeof(t_shell));
 	init_env(envp, shell);
+	g_wstatus = 0;
 	set_new_terminal(shell);
 	while (1)
 	{
@@ -132,15 +145,19 @@ int main(int ac, char **av, char **envp)
 				break;
 			}
 			err = split_usr_input(usr_input, shell);
-			exec = (t_cmd){0};
 			if (err == 0)
 			{
 				i = 0;
 				free(usr_input);
 				shell->i = 0;
+				if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->old_term) == -1)
+					print_error("termios: ", NULL, NULL, errno);
+				signal(SIGINT, SIG_IGN);
 				while (i < shell->n_cmd)
 				{
 					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av, i, shell->n_cmd, shell);
+					if (!shell->usr_cmd[i]->valid)
+						break ;
 					j = 0;
 					// // aff cmd
 					// printf("-> Printing argv & flags\n");
@@ -155,24 +172,13 @@ int main(int ac, char **av, char **envp)
 					// while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && shell->usr_cmd[i]->av[j])
 					// 	printf("-> |%s|\n", shell->usr_cmd[i]->av[j++]);
 					// //
-					exec.flags = shell->usr_cmd[i]->flags;
-					exec.av = shell->usr_cmd[i]->av;
-					exec.ac = shell->usr_cmd[i]->ac;
-					exec.fd_in = shell->usr_cmd[i]->fd_in;
-					exec.fd_out = shell->usr_cmd[i]->fd_out;
-					exec.valid = shell->usr_cmd[i]->valid;
-					if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->old_term) == -1)
-						;
-						// print_error("termios: ", NULL, NULL, errno);
-					signal(SIGINT, SIG_IGN);
-					ft_pipex(&exec, shell);
-					if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->new_term) == -1)
-						;
-						// print_error("termios: ", NULL, NULL, errno);
-					signal(SIGINT, &sig_int);
+					ft_pipex(shell->usr_cmd[i], shell);
 					i++;
 				}
 				ft_waitpids(shell);
+				if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->new_term) == -1)
+					print_error("termios: ", NULL, NULL, errno);
+				signal(SIGINT, &sig_int);
 			}
 		}
 	}

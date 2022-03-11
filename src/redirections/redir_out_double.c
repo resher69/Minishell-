@@ -24,7 +24,7 @@ int redir_out_double(t_cmd *cmd, size_t id_redir)
 			if (cmd->fd_out < 0)
 			{
 				cmd->valid = 0;
-				printf("Minishell : can't create file: %s\n", cmd->av[i]);
+				print_error("open: ", cmd->av[i], NULL, errno);
 			}	
 			else
 				cmd->flags |= E_FILEOUT;
@@ -32,7 +32,7 @@ int redir_out_double(t_cmd *cmd, size_t id_redir)
 		else
 		{
 			cmd->valid = 0;
-			printf("Minishell : syntax error near unexpected token `newline'\n");
+			print_error(NULL, NULL, "syntax error near unexpected token `newline'\n", 258);
 		}
 	}
 	if (cmd->av[i])

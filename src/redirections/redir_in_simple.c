@@ -24,7 +24,7 @@ int redir_in_simple(t_cmd *cmd, size_t id_redir)
 			if (cmd->fd_in < 0)
 			{
 				cmd->valid = 0;
-				printf("Minishell : no such file or directory: %s\n", cmd->av[i]);
+				print_error("open: ", cmd->av[i], NULL, errno);
 			}
 			else
 				cmd->flags |= E_FILEIN;
@@ -32,7 +32,7 @@ int redir_in_simple(t_cmd *cmd, size_t id_redir)
 		else
 		{
 			cmd->valid = 0;
-			printf("Minishell : syntax error near unexpected token `newline'\n");
+			print_error(NULL, NULL, "syntax error near unexpected token `newline'\n", 258);
 		}
 	}
 	if (cmd->av[i])

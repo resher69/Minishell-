@@ -35,7 +35,8 @@ SRCS=			environement.c \
 				bi_unset.c \
 				bi_env.c \
 				bi_exit.c \
-				bi_echo.c
+				bi_echo.c \
+				error.c
 
 # Librarys (only for local archives in project folder)
 LIBRARYS	= 
@@ -45,7 +46,7 @@ CPP_FLAGS	=	-Wextra -Wall -lreadline -g3
 #-fsanitize=address
 CPP_IFLAGS	=	
 
-CPP_LFLAGS	= -L .brew/opt/readline/lib -I .brew/opt/readline/include
+CPP_LFLAGS	=
 
 # Fancy prefixes 
 PREFIX_PROJECT=[\033[1;32m$(NAME)\033[0m]

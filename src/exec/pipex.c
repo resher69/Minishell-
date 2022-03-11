@@ -46,8 +46,7 @@ void	exec_builtins(char *exec_path, char **av, t_shell *shell)
 	else if (!ft_strcmp(exec_path, "exit"))
 		bi_exit(shell);
 	//free
-	//exit(g_error_number)
-	exit(1);
+	exit(g_wstatus);
 }
 
 void	ft_child(t_cmd *const job, const int prev_in,
@@ -77,13 +76,10 @@ void	ft_child(t_cmd *const job, const int prev_in,
 	else if (job->flags & E_PIPEOUT)
 		ft_dup_close((int [2]){shell->pipe_fd[1], STDOUT_FILENO},
 			job->av, exec_path, shell->locations);
-	if (job->valid)
-	{
-		if (is_builtin(exec_path))
-			exec_builtins(exec_path, job->av, shell);
-		execve(exec_path, job->av, list_to_char(shell->env));
-		ft_putstr_fd("execve failed \n", STDERR_FILENO);
-	}
+	// if (is_builtin(exec_path))
+	// 	exec_builtins(exec_path, job->av, shell);
+	execve(exec_path, job->av, list_to_char(shell->env));
+	print_error("execve: ", NULL, NULL, errno);
 	ft_free_job_exit(job->av, exec_path, shell->locations, 1);
 }
 
@@ -121,7 +117,7 @@ void ft_pipex(t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_putstr_fd("fork failed", STDERR_FILENO);
+		print_error("fork: ", NULL, NULL, errno);
 		ft_free_job_exit(cmd->av, exec_path, shell->locations, 1);
 	}
 	if (pid == 0)

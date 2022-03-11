@@ -36,6 +36,49 @@ static char	*error_handling(char *s1, char *s2, int alloc_args)
 	return (new);
 }
 
+static int	get_nb_len(long long nb, int baselen)
+{
+	size_t	i;
+
+	i = 0;
+	if (nb <= 0)
+		i++;
+	while (nb)
+	{
+		nb /= baselen;
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_nbtobase(long long nb, char *base)
+{
+	int		base_len;
+	int		i;
+	char	*nbr;
+
+	base_len = ft_strlen(base);
+	i = get_nb_len(nb, base_len);
+	nbr = calloc(i + 1, sizeof(char));
+	if (!nbr)
+		return (NULL);
+	if (nb < 0)
+	{
+		nbr[0] = '-';
+		nb *= -1;
+	}
+	nbr[i] = '\0';
+	i--;
+	while (nb >= base_len)
+	{
+		nbr[i] = base[nb % base_len];
+		nb /= base_len;
+		i--;
+	}
+	nbr[i] = base[nb];
+	return (nbr);
+}
+
 char	*ft_strjoin(char *s1, char *s2, int alloc_args)
 {
 	size_t	s1_len;
@@ -81,7 +124,7 @@ static char	*heredoc_loop(char *stop, t_shell *shell)
 		content = ft_strjoin(content, line, 3);
 		if (!content)
 		{
-			// print_error("malloc: ", NULL, NULL, ENOMEM);
+			print_error("malloc: ", NULL, NULL, ENOMEM);
 			break ;
 		}
 	}
@@ -99,7 +142,7 @@ static void	heredoc(char *stop, int pipe_fd[2], t_shell *shell)
 	if (close(pipe_fd[STDOUT_FILENO]) == -1
 		|| close(pipe_fd[STDIN_FILENO]) == -1)
 	{
-		// print_error("close: ", NULL, NULL, errno);
+		print_error("close: ", NULL, NULL, errno);
 		return ;
 	}
 }
@@ -112,7 +155,7 @@ static void	heredoc_process_init(char *stop, int pipe_fd[2], t_shell *shell)
 	pid = fork();
 	if (pid == -1)
 	{
-		// print_error("fork: ", NULL, NULL, errno);
+		print_error("fork: ", NULL, NULL, errno);
 		return ;
 	}
 	else if (pid == 0)
@@ -120,16 +163,15 @@ static void	heredoc_process_init(char *stop, int pipe_fd[2], t_shell *shell)
 		signal(SIGINT, &heredoc_sig_int);
 		heredoc(stop, pipe_fd, shell);
 		// free_all(s, 1);
-		// exit(g_error_number);
-        exit(1);
+		exit(g_wstatus);
 	}
 	else if (waitpid(-1, &status, WUNTRACED) == -1)
 	{
-		// print_error("waitpid: ", NULL, NULL, errno);
+		print_error("waitpid: ", NULL, NULL, errno);
 		return ;
 	}
-	// if (WIFEXITED(status))
-	// 	g_error_number = WEXITSTATUS(status);
+	if (WIFEXITED(status))
+		g_wstatus = WEXITSTATUS(status);
 }
 
 int	heredoc_handler(t_cmd *current, char *stop, t_shell *shell)
@@ -138,23 +180,18 @@ int	heredoc_handler(t_cmd *current, char *stop, t_shell *shell)
 
 	if (pipe(pipe_fd) == -1)
 	{
-		// print_error("pipe: ", NULL, NULL, errno);
-		free(stop);
+		print_error("pipe: ", NULL, NULL, errno);
 		return (-1);
 	}
 	signal(SIGINT, SIG_IGN);
 	heredoc_process_init(stop, pipe_fd, shell);
 	signal(SIGINT, &sig_int);
-	// if (g_error_number)
-	// {
-	// 	free(stop);
-	// 	return (-1);
-	// }
+	if (g_wstatus)
+		return (-1);
 	current->fd_in = pipe_fd[STDIN_FILENO];
 	if (close(pipe_fd[STDOUT_FILENO]) == -1)
 	{
-		// print_error("close: ", NULL, NULL, errno);
-		free(stop);
+		print_error("close: ", NULL, NULL, errno);
 		return (-1);
 	}
 	return (0);
@@ -180,11 +217,14 @@ int redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
 		i++;
 		if (cmd->av[i])
 		{
-			heredoc_handler(cmd, cmd->av[i], shell);
-            if (cmd->fd_in < 0)
+			if (heredoc_handler(cmd, cmd->av[i], shell) == -1)
 			{
 				cmd->valid = 0;
-				printf("Minishell : no such file or directory: %s\n", cmd->av[i]);
+			}
+			if (cmd->fd_in < 0)
+			{
+				cmd->valid = 0;
+				print_error("open: ", cmd->av[i], NULL, errno);
 			}
 			else
 				cmd->flags |= E_FILEIN;
@@ -192,17 +232,13 @@ int redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
 		else
 		{
 			cmd->valid = 0;
-			printf("Minishell : syntax error near unexpected token `newline'\n");
+			print_error(NULL, NULL, "syntax error near unexpected token `newline'\n", 258);
 		}
 	}
 	if (cmd->av[i])
 	{
 		free(cmd->av[i]);
 		i++;
-        if (!cmd->av[i])
-        {
-            cmd->valid = 0;
-        }
         while (i < cmd->ac)
 		{
 			av[j] = cmd->av[i];

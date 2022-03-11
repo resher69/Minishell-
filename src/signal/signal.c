@@ -7,7 +7,7 @@ void	sig_int(int sig)
 	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
 	rl_redisplay();
-	// g_error_number = 1;
+	g_wstatus = 1;
 }
 
 
@@ -15,9 +15,8 @@ void	heredoc_sig_int(int sig)
 {
 	(void)sig;
 	ft_putstr_fd("\n", STDERR_FILENO);
-	// g_error_number = 1;
-	// exit(g_error_number);
-    exit(1);
+	g_wstatus = 1;
+	exit(g_wstatus);
 }
 
 void	sig_child(int sig)
@@ -25,11 +24,11 @@ void	sig_child(int sig)
 	if (sig == SIGINT)
 	{
 		ft_putstr_fd("\n", STDERR_FILENO);
-		// g_error_number = 130;
+		g_wstatus = 130;
 	}
 	else if (sig == SIGQUIT)
 	{
 		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
-		// g_error_number = 131;
+		g_wstatus = 131;
 	}
 }
