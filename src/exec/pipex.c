@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/12 17:01:25 by ebellon           #+#    #+#             */
+/*   Updated: 2022/03/12 18:11:27 by ebellon          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-char **list_to_char(t_env_var *env)
+char	**list_to_char(t_env_var *env)
 {
 	char		**envp;
 	t_env_var	*current;
@@ -13,7 +25,7 @@ char **list_to_char(t_env_var *env)
 		current = current->next;
 		i++;
 	}
-	envp = malloc(sizeof(char*) * i + 1);
+	envp = malloc(sizeof(char *) * i + 1);
 	if (!envp)
 		return (NULL);
 	i = 0;
@@ -32,11 +44,11 @@ char **list_to_char(t_env_var *env)
 void	exec_builtins(char *exec_path, char **av, t_shell *shell)
 {
 	if (!ft_strcmp(exec_path, "echo"))
-		bi_echo(av, shell);
+		bi_echo(av);
 	else if (!ft_strcmp(exec_path, "cd"))
 		bi_cd(av, shell);
 	else if (!ft_strcmp(exec_path, "pwd"))
-		bi_pwd(shell);
+		bi_pwd();
 	else if (!ft_strcmp(exec_path, "export"))
 		bi_export(shell, av);
 	else if (!ft_strcmp(exec_path, "unset"))
@@ -44,8 +56,7 @@ void	exec_builtins(char *exec_path, char **av, t_shell *shell)
 	else if (!ft_strcmp(exec_path, "env"))
 		bi_env(shell);
 	else if (!ft_strcmp(exec_path, "exit"))
-		bi_exit(shell);
-	//free
+		bi_exit(shell, av);
 	exit(g_wstatus);
 }
 
@@ -76,8 +87,8 @@ void	ft_child(t_cmd *const job, const int prev_in,
 	else if (job->flags & E_PIPEOUT)
 		ft_dup_close((int [2]){shell->pipe_fd[1], STDOUT_FILENO},
 			job->av, exec_path, shell->locations);
-	// if (is_builtin(exec_path))
-	// 	exec_builtins(exec_path, job->av, shell);
+	if (is_builtin(exec_path, shell, job->av[1]))
+		exec_builtins(exec_path, job->av, shell);
 	execve(exec_path, job->av, list_to_char(shell->env));
 	print_error("execve: ", NULL, NULL, errno);
 	ft_free_job_exit(job->av, exec_path, shell->locations, 1);
@@ -100,20 +111,20 @@ int	ft_parent(t_cmd *const job, pid_t pid, const int prev_in, t_shell *shell)
 	return (err);
 }
 
-void ft_pipex(t_cmd *cmd, t_shell *shell)
+void	ft_pipex(t_cmd *cmd, t_shell *shell)
 {
-    const int	prev_in = shell->pipe_fd[0];
+	const int	prev_in = shell->pipe_fd[0];
 	pid_t		pid;
 	char		*exec_path;
 	int			err;
 
 	err = 0;
 	exec_path = NULL;
-    shell->locations = get_locations(list_to_char(shell->env));
+	shell->locations = get_locations(list_to_char(shell->env));
 	if (cmd->flags & E_PIPEOUT)
 		pipe(shell->pipe_fd);
 	if (*cmd->av)
-		exec_path = get_exec_path(*cmd->av, shell->locations);
+		exec_path = get_exec_path(*cmd->av, shell->locations, shell, cmd->av[1]);
 	pid = fork();
 	if (pid < 0)
 	{

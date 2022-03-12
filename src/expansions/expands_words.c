@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/08 20:01:21 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 17:10:40 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,14 @@ int	expand_words(t_cmd *cmd)
 	while (*cmd->av && (*cmd->av)[i])
 	{
 		quote = get_quote((*cmd->av)[i]);
-		if ((*cmd->av)[i] && ((*cmd->av)[i] == '>' || (*cmd->av)[i] == '<') && quote == QUOTE_NONE)
+		if ((*cmd->av)[i] && ((*cmd->av)[i] == '>'
+			|| (*cmd->av)[i] == '<') && quote == QUOTE_NONE)
 		{
 			i += skip_redir(*cmd->av + i);
 			n_words++;
 		}
-		else if ((*cmd->av)[i] && (!is_ifs((*cmd->av)[i]) || quote != QUOTE_NONE))
+		else if ((*cmd->av)[i] && (!is_ifs((*cmd->av)[i])
+			|| quote != QUOTE_NONE))
 		{
 			i += skip_car(*cmd->av + i);
 			n_words++;
@@ -48,7 +50,9 @@ int	expand_words(t_cmd *cmd)
 	{
 		quote = get_quote((*cmd->av)[i]);
 		j = 0;
-		while ((*cmd->av)[i + j] && ((!is_ifs((*cmd->av)[i + j]) && !((*cmd->av)[i + j] == '>' || (*cmd->av)[i + j] == '<')) || quote != QUOTE_NONE))
+		while ((*cmd->av)[i + j] && ((!is_ifs((*cmd->av)[i + j])
+			&& !((*cmd->av)[i + j] == '>' || (*cmd->av)[i + j] == '<'))
+			|| quote != QUOTE_NONE))
 		{
 			j++;
 			quote = get_quote((*cmd->av)[i + j]);
@@ -65,7 +69,9 @@ int	expand_words(t_cmd *cmd)
 		}
 		else if (((*cmd->av)[i + j] == '>' || (*cmd->av)[i + j] == '<'))
 		{
-			while ((*cmd->av)[i + j] && ((*cmd->av)[i + j] == '>' || (*cmd->av)[i + j] == '<') &&(!is_ifs((*cmd->av)[i + j]) || quote != QUOTE_NONE))
+			while ((*cmd->av)[i + j]
+				&& ((*cmd->av)[i + j] == '>' || (*cmd->av)[i + j] == '<')
+				&& (!is_ifs((*cmd->av)[i + j]) || quote != QUOTE_NONE))
 			{
 				j++;
 				quote = get_quote((*cmd->av)[i + j]);

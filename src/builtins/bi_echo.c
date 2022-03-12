@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 12:17:31 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 16:19:48 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 18:11:40 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ static int	check_option_n(char *arg)
 	return (1);
 }
 
-void	bi_echo(char **av, t_shell *shell)
+void	bi_echo(char **av)
 {
 	size_t	i;
 	bool	option;
 
-	//g_error_number = EXIT_SUCCESS;
+	g_wstatus = EXIT_SUCCESS;
 	i = 0;
 	option = 0;
 	if (av[1])

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:15:30 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/08 19:09:56 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 16:47:37 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define QUOTE_DOUBLE 2
 
 int			get_quote(char c);
-int         check_quote(char c);
+int			check_quote(char c);
 
 size_t		ft_strcmp(char *a, char *b);
 size_t		ft_strlen(char *str);

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:14:53 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 18:38:33 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 17:08:49 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*cpy_expand(char *str, size_t size, int heredoc, t_shell *shell)
 			id[1] += 1;
 		}
 		else if ((str[id[0]] == '$' || (quote == QUOTE_SINGLE && !heredoc))
-				&& str[id[0] + 1] == '?')
+			&& str[id[0] + 1] == '?')
 		{
 			id[0] += 2;
 			buffer = ft_nbtobase(g_wstatus, "0123456789");
@@ -64,7 +64,8 @@ char	*cpy_expand(char *str, size_t size, int heredoc, t_shell *shell)
 		else
 		{
 			id[0] += get_next_var_len(str + id[0] + 1, &buffer) + 1;
-			ft_strlcpy(expand + id[1], get_env(buffer, shell), ft_strlen(get_env(buffer, shell)));
+			ft_strlcpy(expand + id[1], get_env(buffer, shell),
+				ft_strlen(get_env(buffer, shell)));
 			id[1] += ft_strlen(get_env(buffer, shell));
 			free(buffer);
 		}
@@ -98,8 +99,7 @@ int	expand_variables(t_cmd *cmd, int heredoc, t_shell *shell)
 		}
 		else
 		{
-			int off = get_next_var_len(*cmd->av + i + 1, &buffer) + 1;
-			i += off;
+			i += get_next_var_len(*cmd->av + i + 1, &buffer) + 1;
 			expanded_size += ft_strlen(get_env(buffer, shell));
 			free(buffer);
 		}

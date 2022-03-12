@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:14 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/04 14:53:35 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 17:09:10 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	expand_quotes(t_cmd *cmd)
 			while (cmd->av[i][j])
 			{
 				quote = get_quote(cmd->av[i][j]);
-				if ((cmd->av[i][j] != '\'' || quote == QUOTE_DOUBLE) && (cmd->av[i][j] != '\"' || quote == QUOTE_SINGLE))
+				if ((cmd->av[i][j] != '\'' || quote == QUOTE_DOUBLE)
+					&& (cmd->av[i][j] != '\"' || quote == QUOTE_SINGLE))
 				{
 					expand[k] = cmd->av[i][j];
 					k++;

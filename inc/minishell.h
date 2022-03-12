@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 18:41:40 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 18:11:44 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ typedef struct s_cmd
 
 typedef struct s_env_var
 {
-	char				*name;
-	char				*value;
-	size_t		index;
+	char	*name;
+	char	*value;
+	size_t	index;
 	void	*next;
 }				t_env_var;
 
@@ -71,6 +71,8 @@ typedef struct s_shell
 	t_env_var			*env;
 	size_t				env_size;
 	char				**locations;
+	int					exit;
+	int					do_exit;
 }				t_shell;
 
 int		g_wstatus;
@@ -82,16 +84,17 @@ int		expand_variables(t_cmd *cmd, int heredoc, t_shell *shell);
 int		expand_words(t_cmd *cmd);
 int		expand_quotes(t_cmd *cmd);
 
-t_cmd	*expand(char *command, size_t id_pipe_line, size_t n_cmd, t_shell *shell);
-int 	redir_in_simple(t_cmd *cmd, size_t id_redir);
+t_cmd	*expand(char *command, size_t id_pipe_line,
+			size_t n_cmd, t_shell *shell);
+int		redir_in_simple(t_cmd *cmd, size_t id_redir);
 int		redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell);
 int		redir_out_simple(t_cmd *cmd, size_t id_redir);
-int 	redir_out_double(t_cmd *cmd, size_t id_redir);
+int		redir_out_double(t_cmd *cmd, size_t id_redir);
 
 void	ft_free_tab(char **tab);
 char	**get_locations(char **envp);
 char	*concat_path(char *location, char *exec);
-char	*get_exec_path(char *exec_name, char **locations);
+char	*get_exec_path(char *exec_name, char **locations, t_shell *shell, char *f_arg);
 
 char	*ft_nbtobase(long long nb, char *base);
 void	ft_dup_close(int fd[2], char **cmd_arg,
@@ -106,14 +109,16 @@ void	sig_int(int sig);
 void	heredoc_sig_int(int sig);
 char	*ft_strjoin(char *s1, char *s2, int alloc_args);
 void	sig_child(int sig);
-int		is_builtin(char *str);
-void	bi_echo(char **av, t_shell *shell);
+int		is_builtin(char *str, t_shell *shell, char *f_arg);
+void	bi_echo(char **av);
 void	bi_env(t_shell *shell);
-void	bi_exit(t_shell *shell);
+void	bi_exit(t_shell *shell, char **av);
 void	bi_export(t_shell *shell, char **av);
-void	bi_pwd(t_shell *shell);
+void	bi_pwd(void);
 void	bi_unset(t_shell *shell);
 void	bi_cd(char **av, t_shell *shell);
 void	print_error(char *cmd, char *value, char *error, int status);
+char	*ft_strchrstr(const char *s1, const char *s2);
+int		ft_atoi(const char *str);
 
 #endif

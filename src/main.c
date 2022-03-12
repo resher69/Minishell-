@@ -6,11 +6,26 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 20:28:35 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 18:09:07 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+size_t	check_pipe(t_cmd **cmd)
+{
+	size_t	k;
+
+	k = 0;
+	while (cmd && cmd[k])
+	{
+		if (cmd[k]->av[0])
+			k++;
+		else
+			break ;
+	}
+	return (k);
+}
 
 int	split_usr_input(char *usr_input, t_shell *shell)
 {
@@ -51,7 +66,8 @@ int	split_usr_input(char *usr_input, t_shell *shell)
 	{
 		j = 0;
 		quote = get_quote(usr_input[i]);
-		while (usr_input[i + j] && (usr_input[i + j] != '|' || quote != QUOTE_NONE))
+		while (usr_input[i + j] && (usr_input[i + j] != '|'
+				|| quote != QUOTE_NONE))
 		{
 			j++;
 			quote = get_quote(usr_input[i + j]);
@@ -66,15 +82,7 @@ int	split_usr_input(char *usr_input, t_shell *shell)
 		n_pipe++;
 	}
 	cmd_tmp[n_pipe] = NULL;
-	size_t k = 0;
-	while (cmd_tmp && cmd_tmp[k])
-	{
-		if (cmd_tmp[k]->av[0])
-			k++;
-		else
-			break ;
-	}
-	if (k < shell->n_cmd)
+	if (check_pipe(cmd_tmp) < shell->n_cmd)
 		return (printf("Minishell : parse error near `|'\n"));
 	shell->usr_cmd = cmd_tmp;
 	return (0);
@@ -109,7 +117,7 @@ static void	args_checker(int argc, char **argv)
 	}
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	t_shell	*shell;
 	char	*usr_input;
@@ -123,27 +131,27 @@ int main(int ac, char **av, char **envp)
 	init_env(envp, shell);
 	g_wstatus = 0;
 	set_new_terminal(shell);
-	while (1)
+	shell->exit = 0;
+	shell->do_exit = 0;
+	while (!shell->exit && !shell->do_exit)
 	{
 		usr_input = readline("MiniSHEEEESH$>");
 		if (!usr_input)
 		{
-			//free all
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			free(shell);
 			free(usr_input);
-			break;	
+			break ;
 		}
 		add_history(usr_input);
 		if (usr_input[0])
 		{
-			if (strcmp(usr_input, "exit") == 0)
-			{
-				//free all
-				free(shell);
-				free(usr_input);
-				break;
-			}
+			// if (strcmp(usr_input, "exit") == 0)
+			// {
+			// 	free(shell);
+			// 	free(usr_input);
+			// 	break ;
+			// }
 			err = split_usr_input(usr_input, shell);
 			if (err == 0)
 			{
@@ -155,23 +163,11 @@ int main(int ac, char **av, char **envp)
 				signal(SIGINT, SIG_IGN);
 				while (i < shell->n_cmd)
 				{
-					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av, i, shell->n_cmd, shell);
+					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av,
+							i, shell->n_cmd, shell);
 					if (!shell->usr_cmd[i]->valid)
 						break ;
 					j = 0;
-					// // aff cmd
-					// printf("-> Printing argv & flags\n");
-					// if (shell->usr_cmd[i]->flags & E_FILEIN)
-					// 	printf("-> file in\n");
-					// if (shell->usr_cmd[i]->flags & E_FILEOUT)
-					// 	printf("-> file out\n");
-					// if (shell->usr_cmd[i]->flags & E_PIPEIN)
-					// 	printf("-> pipe in\n");
-					// if (shell->usr_cmd[i]->flags & E_PIPEOUT)
-					// 	printf("-> pipe out\n");
-					// while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && shell->usr_cmd[i]->av[j])
-					// 	printf("-> |%s|\n", shell->usr_cmd[i]->av[j++]);
-					// //
 					ft_pipex(shell->usr_cmd[i], shell);
 					i++;
 				}
@@ -182,5 +178,20 @@ int main(int ac, char **av, char **envp)
 			}
 		}
 	}
+	exit(shell->exit);
 	return (0);
 }
+
+/*aff cmd
+printf("-> Printing argv & flags\n");
+if (shell->usr_cmd[i]->flags & E_FILEIN)
+	printf("-> file in\n");
+if (shell->usr_cmd[i]->flags & E_FILEOUT)
+	printf("-> file out\n");
+if (shell->usr_cmd[i]->flags & E_PIPEIN)
+	printf("-> pipe in\n");
+if (shell->usr_cmd[i]->flags & E_PIPEOUT)
+	printf("-> pipe out\n");
+while (shell->usr_cmd[i] && shell->usr_cmd[i]->av && shell->usr_cmd[i]->av[j])
+	printf("-> |%s|\n", shell->usr_cmd[i]->av[j++]);
+*/

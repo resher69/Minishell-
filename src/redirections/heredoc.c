@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/12 17:11:53 by ebellon           #+#    #+#             */
+/*   Updated: 2022/03/12 17:14:16 by ebellon          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 size_t	ft_strlcat(char *dst, char *src, size_t dst_size)
@@ -105,12 +117,12 @@ static char	*heredoc_loop(char *stop, t_shell *shell)
 {
 	char	*line;
 	char	*content;
-    t_cmd   *tmp;
+	t_cmd	*tmp;
 
 	line = NULL;
 	content = NULL;
-    tmp = calloc(sizeof(t_cmd), 1);
-    tmp->av = calloc(sizeof(char*), 1);
+	tmp = calloc(sizeof(t_cmd), 1);
+	tmp->av = calloc(sizeof(char *), 1);
 	while (1)
 	{
 		line = readline("> ");
@@ -118,9 +130,9 @@ static char	*heredoc_loop(char *stop, t_shell *shell)
 			content = ft_strjoin(content, "\n", 1);
 		if (!line || !ft_strcmp(line, stop))
 			break ;
-        *tmp->av = line;
+		*tmp->av = line;
 		expand_variables(tmp, 1, shell);
-        line = *tmp->av;
+		line = *tmp->av;
 		content = ft_strjoin(content, line, 3);
 		if (!content)
 		{
@@ -162,7 +174,6 @@ static void	heredoc_process_init(char *stop, int pipe_fd[2], t_shell *shell)
 	{
 		signal(SIGINT, &heredoc_sig_int);
 		heredoc(stop, pipe_fd, shell);
-		// free_all(s, 1);
 		exit(g_wstatus);
 	}
 	else if (waitpid(-1, &status, WUNTRACED) == -1)
@@ -197,14 +208,14 @@ int	heredoc_handler(t_cmd *current, char *stop, t_shell *shell)
 	return (0);
 }
 
-int redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
+int	redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
 {
-	size_t  i;
-	size_t  j;
+	size_t	i;
+	size_t	j;
 	char	**av;
 
 	i = 0;
-	av = malloc(sizeof(char*) * cmd->ac);
+	av = malloc(sizeof(char *) * cmd->ac);
 	while (i < id_redir)
 	{
 		av[i] = cmd->av[i];
@@ -232,14 +243,15 @@ int redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
 		else
 		{
 			cmd->valid = 0;
-			print_error(NULL, NULL, "syntax error near unexpected token `newline'\n", 258);
+			print_error(NULL, NULL,
+				"syntax error near unexpected token `newline'\n", 258);
 		}
 	}
 	if (cmd->av[i])
 	{
 		free(cmd->av[i]);
 		i++;
-        while (i < cmd->ac)
+		while (i < cmd->ac)
 		{
 			av[j] = cmd->av[i];
 			i++;

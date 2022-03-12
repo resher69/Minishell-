@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/12 17:17:56 by ebellon           #+#    #+#             */
+/*   Updated: 2022/03/12 17:18:12 by ebellon          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	sig_int(int sig)
@@ -9,7 +21,6 @@ void	sig_int(int sig)
 	rl_redisplay();
 	g_wstatus = 1;
 }
-
 
 void	heredoc_sig_int(int sig)
 {

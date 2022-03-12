@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:20:34 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/08 19:18:21 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 17:18:56 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	skip_car(char *str)
 	i = 0;
 	if (*str)
 		quote = get_quote(*str);
-	while (str && str[i] && ((!is_ifs(str[i]) && !(str[i] == '>' || str[i] == '<')) || quote != QUOTE_NONE))
+	while (str && str[i] && ((!is_ifs(str[i])
+				&& !(str[i] == '>' || str[i] == '<')) || quote != QUOTE_NONE))
 	{
 		quote = get_quote(str[i]);
 		i++;

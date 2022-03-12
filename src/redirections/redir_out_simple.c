@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_out_simple.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/12 17:16:53 by ebellon           #+#    #+#             */
+/*   Updated: 2022/03/12 17:16:54 by ebellon          ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int redir_out_simple(t_cmd *cmd, size_t id_redir)
+int	redir_out_simple(t_cmd *cmd, size_t id_redir)
 {
-	size_t  i;
-	size_t  j;
+	size_t	i;
+	size_t	j;
 	char	**av;
 
 	i = 0;
-	av = malloc(sizeof(char*) * cmd->ac);
+	av = malloc(sizeof(char *) * cmd->ac);
 	while (i < id_redir)
 	{
 		av[i] = cmd->av[i];
@@ -32,7 +44,8 @@ int redir_out_simple(t_cmd *cmd, size_t id_redir)
 		else
 		{
 			cmd->valid = 0;
-			print_error(NULL, NULL, "syntax error near unexpected token `newline'\n", 258);
+			print_error(NULL, NULL,
+				"syntax error near unexpected token `newline'\n", 258);
 		}
 	}
 	if (cmd->av[i])
