@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 17:00:09 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 17:43:03 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 19:01:24 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*replace_by_home_path(t_shell *shell)
 	if (!elem || !elem->value)
 		return (NULL);
 	else
-		path = ft_strldup(elem->value + 1, ft_strlen(elem->value));
+		path = ft_strldup(elem->value, ft_strlen(elem->value));
 	if (!path)
 		return (NULL);
 	return (path);

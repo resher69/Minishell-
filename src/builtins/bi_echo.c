@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 12:17:31 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 18:11:40 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 20:19:46 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	check_option_n(char *arg)
 	return (1);
 }
 
-void	bi_echo(char **av)
+void	bi_echo(char **av, int fd)
 {
 	size_t	i;
 	bool	option;
@@ -45,11 +45,11 @@ void	bi_echo(char **av)
 		}
 		while (av[i])
 		{
-			ft_putstr_fd(av[i], 1);
+			ft_putstr_fd(av[i], fd);
 			if (av[++i])
-				ft_putstr_fd(" ", 1);
+				ft_putstr_fd(" ", fd);
 		}
 	}
 	if (!option)
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", fd);
 }

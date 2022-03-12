@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 18:09:07 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 20:21:40 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,44 @@ static void	args_checker(int argc, char **argv)
 	}
 }
 
+void	ft_exec(t_shell *shell)
+{
+	size_t	i;
+	size_t	j;
+	t_cmd	*tmp;
+
+	shell->i = 0;
+	i = 0;
+	tmp = expand(shell->usr_cmd[0]->av[0], 0, 1, shell);
+	if (shell->n_cmd == 1 && is_builtin(tmp->av[0], shell, tmp->av[1]) == 1)
+		exec_builtins(tmp->av[0], tmp->av, shell, tmp->fd_out);
+	else
+	{
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->old_term) == -1)
+			print_error("termios: ", NULL, NULL, errno);
+		signal(SIGINT, SIG_IGN);
+		while (i < shell->n_cmd)
+		{
+			shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av,
+					i, shell->n_cmd, shell);
+			if (!shell->usr_cmd[i]->valid)
+				break ;
+			j = 0;
+			ft_pipex(shell->usr_cmd[i], shell);
+			i++;
+		}
+		ft_waitpids(shell);
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->new_term) == -1)
+			print_error("termios: ", NULL, NULL, errno);
+		signal(SIGINT, &sig_int);
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	*shell;
 	char	*usr_input;
 	int		err;
-	size_t	i;
-	size_t	j;
 
 	(void)av;
 	args_checker(ac, av);
@@ -146,36 +177,10 @@ int	main(int ac, char **av, char **envp)
 		add_history(usr_input);
 		if (usr_input[0])
 		{
-			// if (strcmp(usr_input, "exit") == 0)
-			// {
-			// 	free(shell);
-			// 	free(usr_input);
-			// 	break ;
-			// }
 			err = split_usr_input(usr_input, shell);
+			free(usr_input);
 			if (err == 0)
-			{
-				i = 0;
-				free(usr_input);
-				shell->i = 0;
-				if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->old_term) == -1)
-					print_error("termios: ", NULL, NULL, errno);
-				signal(SIGINT, SIG_IGN);
-				while (i < shell->n_cmd)
-				{
-					shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av,
-							i, shell->n_cmd, shell);
-					if (!shell->usr_cmd[i]->valid)
-						break ;
-					j = 0;
-					ft_pipex(shell->usr_cmd[i], shell);
-					i++;
-				}
-				ft_waitpids(shell);
-				if (tcsetattr(STDIN_FILENO, TCSANOW, &shell->new_term) == -1)
-					print_error("termios: ", NULL, NULL, errno);
-				signal(SIGINT, &sig_int);
-			}
+				ft_exec(shell);
 		}
 	}
 	exit(shell->exit);

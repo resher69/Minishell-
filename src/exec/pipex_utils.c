@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 14:08:46 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/12 18:12:58 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 19:48:54 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,13 +248,14 @@ int	is_builtin(char *str, t_shell *shell, char *f_arg)
 		if (shell->n_cmd == 1)
 			shell->do_exit = 1;
 		if (f_arg)
-			shell->exit = ft_atoi(ft_strchrstr(f_arg, "-0123456789"));;
+			shell->exit = ft_atoi(ft_strchrstr(f_arg, "-0123456789"));
 		return (1);
 	}
 	return (0);
 }
 
-char	*get_exec_path(char *exec_name, char **locations, t_shell *shell, char *f_arg)
+char	*get_exec_path(char *exec_name, char **locations,
+	t_shell *shell, char *f_arg)
 {
 	char	*buf;
 	int		fd_buf;
