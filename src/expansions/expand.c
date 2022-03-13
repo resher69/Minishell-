@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:00 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/11 18:47:48 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 20:22:25 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,29 @@ void	set_flags(t_cmd *cmd, size_t id_pipe_line, size_t n_cmd)
 		cmd->flags |= (E_PIPEIN | E_PIPEOUT);
 }
 
+void	do_redir(t_cmd *command, t_shell *shell)
+{	
+	size_t	i;
+
+	i = 0;
+	while (i < command->ac)
+	{
+		if (ft_strcmp(command->av[i], "<<") == 0)
+			i = redir_in_double(command, i, shell);
+		else if (ft_strcmp(command->av[i], "<") == 0)
+			i = redir_in_simple(command, i);
+		else if (ft_strcmp(command->av[i], ">>") == 0)
+			i = redir_out_double(command, i);
+		else if (ft_strcmp(command->av[i], ">") == 0)
+			i = redir_out_simple(command, i);
+		else
+			i++;
+	}
+}
+
 t_cmd	*expand(char *cmd, size_t id_pipe_line, size_t n_cmd, t_shell *shell)
 {
 	t_cmd	*command;
-	size_t	i;
 
 	command = malloc(sizeof(t_cmd));
 	if (!command)
@@ -48,28 +67,7 @@ t_cmd	*expand(char *cmd, size_t id_pipe_line, size_t n_cmd, t_shell *shell)
 	if (expand_variables(command, 0, shell) == -1)
 		return (NULL);
 	expand_words(command);
-	i = 0;
-	while (i < command->ac)
-	{
-		if (ft_strcmp(command->av[i], "<<") == 0)
-		{
-			i = redir_in_double(command, i, shell);
-		}
-		else if (ft_strcmp(command->av[i], "<") == 0)
-		{
-			i = redir_in_simple(command, i);
-		}
-		else if (ft_strcmp(command->av[i], ">>") == 0)
-		{
-			i = redir_out_double(command, i);
-		}
-		else if (ft_strcmp(command->av[i], ">") == 0)
-		{
-			i = redir_out_simple(command, i);
-		}
-		else
-			i++;
-	}
+	do_redir(command, shell);
 	expand_quotes(command);
 	return (command);
 }

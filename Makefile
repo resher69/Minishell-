@@ -42,7 +42,8 @@ SRCS=			environement.c \
 				error.c \
 				pipex_utils_second.c \
 				pipex_trash_second.c \
-				pipex_trash.c
+				pipex_trash.c \
+				main_utils.c
 
 # Librarys (only for local archives in project folder)
 LIBRARYS	= 

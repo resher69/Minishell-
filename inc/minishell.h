@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 19:42:29 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 19:58:17 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,5 +134,8 @@ void		*ft_calloc(size_t count, size_t size);
 char		*ft_strndup(char *src, size_t size);
 char		**ft_split(char const *s, char c);
 char		**list_to_char(t_env_var *env);
+void		set_new_terminal(t_shell *s);
+int			split_usr_input(char *usr_input, t_shell *shell);
+size_t		check_pipe(t_cmd **cmd);
 
 #endif

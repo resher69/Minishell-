@@ -6,11 +6,26 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 16:48:04 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/12 16:48:18 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 19:59:43 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+size_t	check_pipe(t_cmd **cmd)
+{
+	size_t	k;
+
+	k = 0;
+	while (cmd && cmd[k])
+	{
+		if (cmd[k]->av[0])
+			k++;
+		else
+			break ;
+	}
+	return (k);
+}
 
 void	print_error(char *cmd, char *value, char *error, int status)
 {
