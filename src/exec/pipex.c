@@ -6,40 +6,11 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 17:01:25 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/12 21:05:48 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 18:00:45 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**list_to_char(t_env_var *env)
-{
-	char		**envp;
-	t_env_var	*current;
-	size_t		i;
-
-	i = 0;
-	current = env;
-	while (current)
-	{
-		current = current->next;
-		i++;
-	}
-	envp = malloc(sizeof(char *) * i + 1);
-	if (!envp)
-		return (NULL);
-	i = 0;
-	current = env;
-	while (current)
-	{
-		envp[i] = ft_strjoin(current->name, "=", 0);
-		envp[i] = ft_strjoin(envp[i], current->value, 1);
-		current = current->next;
-		i++;
-	}
-	envp[i] = NULL;
-	return (envp);
-}
 
 void	exec_builtins(char *exec_path, char **av, t_shell *shell, int fd)
 {
@@ -59,13 +30,9 @@ void	exec_builtins(char *exec_path, char **av, t_shell *shell, int fd)
 		bi_exit(shell, av);
 }
 
-void	ft_child(t_cmd *const job, const int prev_in,
+void	ft_do_dup(t_cmd *const job, const int prev_in,
 				char *exec_path, t_shell *shell)
 {
-	signal(SIGINT, NULL);
-	signal(SIGQUIT, NULL);
-	if (exec_path == NULL)
-		ft_free_job_exit(job->av, exec_path, shell->locations, 1);
 	if (job->flags & E_FILEIN)
 	{
 		if (job->fd_in < 0)
@@ -86,6 +53,16 @@ void	ft_child(t_cmd *const job, const int prev_in,
 	else if (job->flags & E_PIPEOUT)
 		ft_dup_close((int [2]){shell->pipe_fd[1], STDOUT_FILENO},
 			job->av, exec_path, shell->locations);
+}
+
+void	ft_child(t_cmd *const job, const int prev_in,
+				char *exec_path, t_shell *shell)
+{
+	signal(SIGINT, NULL);
+	signal(SIGQUIT, NULL);
+	if (exec_path == NULL)
+		ft_free_job_exit(job->av, exec_path, shell->locations, 1);
+	ft_do_dup(job, prev_in, exec_path, shell);
 	if (is_builtin(exec_path, shell, job->av[1]))
 		exec_builtins(exec_path, job->av, shell, job->fd_out);
 	else

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 17:25:08 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 19:06:43 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,9 @@ void	ft_exec(t_shell *shell)
 
 	shell->i = 0;
 	i = 0;
-	tmp = expand(shell->usr_cmd[0]->av[0], 0, 1, shell);
+	tmp = expand(shell->usr_cmd[0]->av[0], 0, shell->n_cmd, shell);
+	if (tmp)
+		shell->usr_cmd[0] = tmp;
 	if (shell->n_cmd == 1 && is_builtin(tmp->av[0], shell, tmp->av[1]) == 1)
 		exec_builtins(tmp->av[0], tmp->av, shell, tmp->fd_out);
 	else
@@ -135,8 +137,9 @@ void	ft_exec(t_shell *shell)
 		signal(SIGINT, SIG_IGN);
 		while (i < shell->n_cmd)
 		{
-			shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av,
-					i, shell->n_cmd, shell);
+			if (i != 0)
+				shell->usr_cmd[i] = expand(*shell->usr_cmd[i]->av,
+						i, shell->n_cmd, shell);
 			if (!shell->usr_cmd[i]->valid)
 				break ;
 			j = 0;

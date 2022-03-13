@@ -39,13 +39,16 @@ SRCS=			environement.c \
 				bi_env.c \
 				bi_exit.c \
 				bi_echo.c \
-				error.c
+				error.c \
+				pipex_utils_second.c \
+				pipex_trash_second.c \
+				pipex_trash.c
 
 # Librarys (only for local archives in project folder)
 LIBRARYS	= 
 
 CLANG		=	gcc
-CPP_FLAGS	=	-Wextra -Wall -lreadline -g3 -fsanitize=address
+CPP_FLAGS	=	-Wextra -Wall -lreadline -g3
 #-fsanitize=address
 CPP_IFLAGS	=	
 

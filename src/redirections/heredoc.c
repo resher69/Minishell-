@@ -6,112 +6,11 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 17:11:53 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/12 17:14:16 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 19:36:26 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-size_t	ft_strlcat(char *dst, char *src, size_t dst_size)
-{
-	size_t	dst_len;
-	size_t	src_len;
-	size_t	i;
-
-	dst_len = ft_strlen(dst);
-	src_len = ft_strlen(src);
-	if (dst_len >= dst_size)
-		return (dst_size + src_len);
-	i = 0;
-	while (src[i] && (i + dst_len < dst_size - 1))
-	{
-		dst[i + dst_len] = src[i];
-		i++;
-	}
-	dst[i + dst_len] = '\0';
-	return (dst_len + src_len);
-}
-
-static char	*error_handling(char *s1, char *s2, int alloc_args)
-{
-	char	*new;
-
-	new = NULL;
-	if (!s1)
-		new = strdup(s2);
-	else if (!s2)
-		new = strdup(s1);
-	if (alloc_args == 1 || alloc_args == 3)
-		free((char *)s1);
-	if (alloc_args > 2)
-		free((char *)s2);
-	return (new);
-}
-
-static int	get_nb_len(long long nb, int baselen)
-{
-	size_t	i;
-
-	i = 0;
-	if (nb <= 0)
-		i++;
-	while (nb)
-	{
-		nb /= baselen;
-		i++;
-	}
-	return (i);
-}
-
-char	*ft_nbtobase(long long nb, char *base)
-{
-	int		base_len;
-	int		i;
-	char	*nbr;
-
-	base_len = ft_strlen(base);
-	i = get_nb_len(nb, base_len);
-	nbr = calloc(i + 1, sizeof(char));
-	if (!nbr)
-		return (NULL);
-	if (nb < 0)
-	{
-		nbr[0] = '-';
-		nb *= -1;
-	}
-	nbr[i] = '\0';
-	i--;
-	while (nb >= base_len)
-	{
-		nbr[i] = base[nb % base_len];
-		nb /= base_len;
-		i--;
-	}
-	nbr[i] = base[nb];
-	return (nbr);
-}
-
-char	*ft_strjoin(char *s1, char *s2, int alloc_args)
-{
-	size_t	s1_len;
-	size_t	s2_len;
-	char	*new;
-
-	if (!s1 || !s2)
-		return (error_handling(s1, s2, alloc_args));
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	new = calloc((s1_len + s2_len + 1), sizeof(char));
-	if (!new)
-		return (error_handling(NULL, NULL, alloc_args));
-	ft_strlcpy(new, s1, s1_len + 1);
-	ft_strlcat(new, s2, s1_len + s2_len + 1);
-	if (alloc_args == 1 || alloc_args == 3)
-		free((char *)s1);
-	if (alloc_args > 2)
-		free((char *)s2);
-	return (new);
-}
 
 static char	*heredoc_loop(char *stop, t_shell *shell)
 {
@@ -262,5 +161,5 @@ int	redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
 	}
 	cmd->av = av;
 	cmd->ac = j;
-	return (0);
+	return (id_redir + 1);
 }

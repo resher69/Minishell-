@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 19:19:56 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 19:42:29 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,8 @@ char		*error_handling(char *s1, char *s2, int alloc_args);
 void		free_redir(t_cmd *cmd, size_t i, size_t j, char **av);
 int			heredoc_handler(t_cmd *current, char *stop, t_shell *shell);
 void		*ft_calloc(size_t count, size_t size);
+char		*ft_strndup(char *src, size_t size);
+char		**ft_split(char const *s, char c);
+char		**list_to_char(t_env_var *env);
 
 #endif

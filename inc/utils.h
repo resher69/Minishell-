@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:15:30 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 18:07:53 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 19:44:00 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,5 @@ int			ft_isdigit(int c);
 int			ft_isalnum(int c);
 int			ft_isalpha(int c);
 void		skip_spaces(char **line);
-
 
 #endif

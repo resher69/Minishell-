@@ -3,17 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out_simple.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 17:16:53 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/13 18:54:25 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/12 17:16:54 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_redir_out_s(t_cmd *cmd, size_t i)
+int	redir_out_simple(t_cmd *cmd, size_t id_redir)
 {
+	size_t	i;
+	size_t	j;
+	char	**av;
+
+	i = 0;
+	av = malloc(sizeof(char *) * cmd->ac);
+	while (i < id_redir)
+	{
+		av[i] = cmd->av[i];
+		i++;
+	}
+	j = i;
 	if (cmd->av[i])
 	{
 		free(cmd->av[i]);
@@ -36,24 +48,19 @@ void	exec_redir_out_s(t_cmd *cmd, size_t i)
 				"syntax error near unexpected token `newline'\n", 258);
 		}
 	}
-}
-
-int	redir_out_simple(t_cmd *cmd, size_t id_redir)
-{
-	size_t	i;
-	size_t	j;
-	char	**av;
-
-	i = 0;
-	av = malloc(sizeof(char *) * cmd->ac);
-	while (i < id_redir)
+	if (cmd->av[i])
 	{
-		av[i] = cmd->av[i];
+		free(cmd->av[i]);
 		i++;
+		while (i < cmd->ac)
+		{
+			av[j] = cmd->av[i];
+			i++;
+			j++;
+		}
+		av[j] = NULL;
+		free(cmd->av);
 	}
-	j = i;
-	exec_redir_out_s(cmd, i);
-	free_redir(cmd, i, j, av);
 	cmd->av = av;
 	cmd->ac = j;
 	return (0);
