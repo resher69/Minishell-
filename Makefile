@@ -14,15 +14,18 @@ LIB_DIR		= lib
 # - make will check for the file in SRC_DIR
 # - use "-" if empty
 SRCS=			environement.c \
+				env_utils.c \
 				utils.c \
 				libft.c \
 				libft_bis.c \
+				libft_third.c \
 				main.c \
 				expand_variables.c \
 				expands_quotes.c \
 				expand.c \
 				expands_words.c \
 				redir_in_simple.c \
+				redir_in_double.c \
 				redir_out_simple.c \
 				redir_out_double.c \
 				heredoc.c \
@@ -42,7 +45,7 @@ SRCS=			environement.c \
 LIBRARYS	= 
 
 CLANG		=	gcc
-CPP_FLAGS	=	-Wextra -Wall -lreadline -g3 
+CPP_FLAGS	=	-Wextra -Wall -lreadline -g3 -fsanitize=address
 #-fsanitize=address
 CPP_IFLAGS	=	
 

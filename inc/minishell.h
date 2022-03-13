@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 17:26:47 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 19:19:56 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 # include <unistd.h>
 # include <signal.h>
 # include <sys/param.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <dirent.h>
 # include <termios.h>
 # include <errno.h>
@@ -123,5 +121,15 @@ void		exec_builtins(char *exec_path, char **av, t_shell *shell, int fd);
 int			is_word(char *str);
 void		env_del(t_shell *s, t_env_var *elem);
 t_env_var	*find_env_var(t_shell *shell, char *name);
+int			env_new(t_shell *s, char *var);
+void		create_env_variable(t_shell *s, char **av);
+int			create_variable(t_shell *s, char *cmd, char *name);
+void		exec_export(int fd, size_t i, t_env_var *export);
+int			get_nb_len(long long nb, int baselen);
+size_t		ft_strlcat(char *dst, char *src, size_t dst_size);
+char		*error_handling(char *s1, char *s2, int alloc_args);
+void		free_redir(t_cmd *cmd, size_t i, size_t j, char **av);
+int			heredoc_handler(t_cmd *current, char *stop, t_shell *shell);
+void		*ft_calloc(size_t count, size_t size);
 
 #endif

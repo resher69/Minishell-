@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir_out_simple.c                                 :+:      :+:    :+:   */
+/*   redir_in_double.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/12 17:16:53 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/13 18:54:25 by agardet          ###   ########lyon.fr   */
+/*   Created: 2022/03/13 18:56:41 by agardet           #+#    #+#             */
+/*   Updated: 2022/03/13 18:58:37 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_redir_out_s(t_cmd *cmd, size_t i)
+void	exec_redir_in_d(t_cmd *cmd, size_t i, t_shell *shell)
 {
 	if (cmd->av[i])
 	{
@@ -20,14 +20,17 @@ void	exec_redir_out_s(t_cmd *cmd, size_t i)
 		i++;
 		if (cmd->av[i])
 		{
-			cmd->fd_out = open(cmd->av[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			if (cmd->fd_out < 0)
+			if (heredoc_handler(cmd, cmd->av[i], shell) == -1)
+			{
+				cmd->valid = 0;
+			}
+			if (cmd->fd_in < 0)
 			{
 				cmd->valid = 0;
 				print_error("open: ", cmd->av[i], NULL, errno);
-			}	
+			}
 			else
-				cmd->flags |= E_FILEOUT;
+				cmd->flags |= E_FILEIN;
 		}
 		else
 		{
@@ -38,7 +41,7 @@ void	exec_redir_out_s(t_cmd *cmd, size_t i)
 	}
 }
 
-int	redir_out_simple(t_cmd *cmd, size_t id_redir)
+int	redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
 {
 	size_t	i;
 	size_t	j;
@@ -52,7 +55,7 @@ int	redir_out_simple(t_cmd *cmd, size_t id_redir)
 		i++;
 	}
 	j = i;
-	exec_redir_out_s(cmd, i);
+	exec_redir_in_d(cmd, i, shell);
 	free_redir(cmd, i, j, av);
 	cmd->av = av;
 	cmd->ac = j;

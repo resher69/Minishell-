@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 17:00:09 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 19:01:24 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 17:49:27 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,7 @@ void	bi_cd(char **av, t_shell *shell)
 	{
 		path = replace_by_home_path(shell);
 		if (!path)
-		{
-			print_error("cd: ", NULL, "HOME not set\n", EXIT_FAILURE);
-			return ;
-		}
+			return (print_error("cd: ", NULL, "HOME not set\n", EXIT_FAILURE));
 	}
 	else
 		path = ft_strldup(av[1], ft_strlen(av[1]));

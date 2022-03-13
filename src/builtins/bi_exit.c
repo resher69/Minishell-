@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:25:45 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 17:44:23 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 17:50:51 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	skip_spaces(char **line)
-{
-	while (**line == ' ')
-		(*line)++;
-}
-
-int	ft_isdigit(int c)
-{
-	return ('0' <= c && c <= '9');
-}
 
 int	ft_atoi(const char *str)
 {

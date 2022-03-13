@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   bi_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 12:29:10 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 17:30:58 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 17:51:23 by agardet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_isalpha(int c)
+{
+	return (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z'));
+}
+
+int	ft_isalnum(int c)
+{
+	return (ft_isalpha(c) || ft_isdigit(c));
+}
+
+void	skip_spaces(char **line)
+{
+	while (**line == ' ')
+		(*line)++;
+}
+
+int	ft_isdigit(int c)
+{
+	return ('0' <= c && c <= '9');
+}
 
 void	bi_env(t_shell *shell)
 {
