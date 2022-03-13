@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 21:05:14 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 17:26:47 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,52 +76,52 @@ typedef struct s_shell
 
 int		g_wstatus;
 
-void	init_env(char **envp, t_shell *shell);
-char	*get_env(char *var_name, t_shell *shell);
+void		init_env(char **envp, t_shell *shell);
+char		*get_env(char *var_name, t_shell *shell);
 
-int		expand_variables(t_cmd *cmd, int heredoc, t_shell *shell);
-int		expand_words(t_cmd *cmd);
-int		expand_quotes(t_cmd *cmd);
+int			expand_variables(t_cmd *cmd, int heredoc, t_shell *shell);
+int			expand_words(t_cmd *cmd);
+int			expand_quotes(t_cmd *cmd);
 
-t_cmd	*expand(char *command, size_t id_pipe_line,
-			size_t n_cmd, t_shell *shell);
-int		redir_in_simple(t_cmd *cmd, size_t id_redir);
-int		redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell);
-int		redir_out_simple(t_cmd *cmd, size_t id_redir);
-int		redir_out_double(t_cmd *cmd, size_t id_redir);
+t_cmd		*expand(char *command, size_t id_pipe_line,
+				size_t n_cmd, t_shell *shell);
+int			redir_in_simple(t_cmd *cmd, size_t id_redir);
+int			redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell);
+int			redir_out_simple(t_cmd *cmd, size_t id_redir);
+int			redir_out_double(t_cmd *cmd, size_t id_redir);
 
-void	ft_free_tab(char **tab);
-char	**get_locations(char **envp);
-char	*concat_path(char *location, char *exec);
-char	*get_exec_path(char *exec_name, char **locations,
-			t_shell *shell, char *f_arg);
-char	*ft_nbtobase(long long nb, char *base);
-void	ft_dup_close(int fd[2], char **cmd_arg,
-			char *exec_path, char **locations);
-int		ft_safe_close(int fd);
-void	ft_free_job_exit(char **cmd_arg, char *exec_path,
-			char **locations, int err);
-void	ft_waitpids(t_shell *shell);
-void	ft_pipex(t_cmd *cmd, t_shell *shell);
-void	ft_putstr_fd(char *s, int fd);
-void	sig_int(int sig);
-void	heredoc_sig_int(int sig);
-char	*ft_strjoin(char *s1, char *s2, int alloc_args);
-void	sig_child(int sig);
-int		is_builtin(char *str, t_shell *shell, char *f_arg);
-void	bi_echo(char **av, int fd);
-void	bi_env(t_shell *shell);
-void	bi_exit(t_shell *shell, char **av);
-void	bi_export(t_shell *shell, char **av, int fd);
-void	bi_pwd(void);
-void	bi_unset(t_shell *shell, char **av);
-void	bi_cd(char **av, t_shell *shell);
-void	print_error(char *cmd, char *value, char *error, int status);
-char	*ft_strchrstr(const char *s1, const char *s2);
-int		ft_atoi(const char *str);
-void	exec_builtins(char *exec_path, char **av, t_shell *shell, int fd);
-int		is_word(char *str);
-void	env_del(t_shell *s, t_env_var *elem);
+void		ft_free_tab(char **tab);
+char		**get_locations(char **envp);
+char		*concat_path(char *location, char *exec);
+char		*get_exec_path(char *exec_name, char **locations,
+				t_shell *shell, char *f_arg);
+char		*ft_nbtobase(long long nb, char *base);
+void		ft_dup_close(int fd[2], char **cmd_arg,
+				char *exec_path, char **locations);
+int			ft_safe_close(int fd);
+void		ft_free_job_exit(char **cmd_arg, char *exec_path,
+				char **locations, int err);
+void		ft_waitpids(t_shell *shell);
+void		ft_pipex(t_cmd *cmd, t_shell *shell);
+void		ft_putstr_fd(char *s, int fd);
+void		sig_int(int sig);
+void		heredoc_sig_int(int sig);
+char		*ft_strjoin(char *s1, char *s2, int alloc_args);
+void		sig_child(int sig);
+int			is_builtin(char *str, t_shell *shell, char *f_arg);
+void		bi_echo(char **av, int fd);
+void		bi_env(t_shell *shell);
+void		bi_exit(t_shell *shell, char **av);
+void		bi_export(t_shell *shell, char **av, int fd);
+void		bi_pwd(void);
+void		bi_unset(t_shell *shell, char **av);
+void		bi_cd(char **av, t_shell *shell);
+void		print_error(char *cmd, char *value, char *error, int status);
+char		*ft_strchrstr(const char *s1, const char *s2);
+int			ft_atoi(const char *str);
+void		exec_builtins(char *exec_path, char **av, t_shell *shell, int fd);
+int			is_word(char *str);
+void		env_del(t_shell *s, t_env_var *elem);
 t_env_var	*find_env_var(t_shell *shell, char *name);
 
 #endif

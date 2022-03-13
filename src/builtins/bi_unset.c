@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 17:29:13 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/12 21:05:33 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 17:24:09 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	bi_unset(t_shell *s, char **av)
 {
 	t_env_var	*unset;
-	size_t	i;
+	size_t		i;
 
 	i = 1;
 	g_wstatus = EXIT_SUCCESS;

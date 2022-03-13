@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 17:29:07 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/12 21:00:16 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/13 17:24:41 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ void	env_del(t_shell *s, t_env_var *elem)
 	free(elem->value);
 	free(elem);
 }
+
 static int	create_variable(t_shell *s, char *cmd, char *name)
 {
 	t_env_var	*export;
