@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/14 18:37:36 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:28:39 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@
 # include <termios.h>
 # include <errno.h>
 
-# include "utils.h"
+# define QUOTE_NONE   0
+# define QUOTE_SINGLE 1
+# define QUOTE_DOUBLE 2
 
 typedef enum e_masks
 {
@@ -74,20 +76,37 @@ typedef struct s_shell
 
 int		g_wstatus;
 
+int			get_quote(char c);
+int			check_quote(char c);
+size_t		ft_strcmp(char *a, char *b);
+size_t		ft_strlen(char *str);
+size_t		ft_strchr(char *s, char c);
+char		*ft_strchr_bis(const char *str, int c);
+size_t		ft_bzero(char *s, size_t size);
+size_t		ft_bcopy(char *dst, char *src, size_t size);
+char		*ft_strldup(char *s, size_t size);
+void		ft_strlcpy(char *dst, char *src, size_t len);
+char		*ft_substr(char *src, unsigned int start, size_t len);
+int			is_ifs(char c);
+int			is_valid_var_char(char c);
+int			skip_ifs(char *str);
+int			skip_redir(char *str);
+int			skip_car(char *str);
+int			ft_isdigit(int c);
+int			ft_isalnum(int c);
+int			ft_isalpha(int c);
+void		skip_spaces(char **line);
 void		init_env(char **envp, t_shell *shell);
 char		*get_env(char *var_name, t_shell *shell);
-
 int			expand_variables(t_cmd *cmd, int heredoc, t_shell *shell);
 int			expand_words(t_cmd *cmd);
 int			expand_quotes(t_cmd *cmd);
-
 t_cmd		*expand(char *command, size_t id_pipe_line,
 				size_t n_cmd, t_shell *shell);
 int			redir_in_simple(t_cmd *cmd, size_t id_redir);
 int			redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell);
 int			redir_out_simple(t_cmd *cmd, size_t id_redir);
 int			redir_out_double(t_cmd *cmd, size_t id_redir);
-
 void		ft_free_tab(char **tab);
 char		**get_locations(char **envp);
 char		*concat_path(char *location, char *exec);

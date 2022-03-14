@@ -6,11 +6,11 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:18:53 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/06 16:21:30 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:23:06 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "minishell.h"
 
 int	get_quote(char c)
 {
