@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:14:53 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 17:08:49 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 18:37:05 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,31 +47,25 @@ char	*cpy_expand(char *str, size_t size, int heredoc, t_shell *shell)
 	{
 		quote = get_quote(str[id[0]]);
 		if (str[id[0]] != '$' || (quote == QUOTE_SINGLE && !heredoc))
-		{
-			expand[id[1]] = str[id[0]];
-			id[0] += 1;
-			id[1] += 1;
-		}
+			cpy_char_expand(expand, str, &id[0], &id[1]);
 		else if ((str[id[0]] == '$' || (quote == QUOTE_SINGLE && !heredoc))
 			&& str[id[0] + 1] == '?')
-		{
-			id[0] += 2;
-			buffer = ft_nbtobase(g_wstatus, "0123456789");
-			ft_strlcpy(expand + id[1], buffer, ft_strlen(buffer));
-			id[1] += ft_strlen(buffer);
-			free(buffer);
-		}
+			cpy_g_wstatus(expand, &id[0], &id[1]);
 		else
 		{
 			id[0] += get_next_var_len(str + id[0] + 1, &buffer) + 1;
-			ft_strlcpy(expand + id[1], get_env(buffer, shell),
-				ft_strlen(get_env(buffer, shell)));
-			id[1] += ft_strlen(get_env(buffer, shell));
-			free(buffer);
+			cpy_env_var(&id[1], buffer, expand, shell);
 		}
 	}
 	expand[id[1]] = 0;
 	return (expand);
+}
+
+void	do_incr(size_t	*expanded_size, size_t *i,
+				size_t i_incr, size_t exp_incr)
+{
+	*expanded_size += exp_incr;
+	*i += i_incr;
 }
 
 int	expand_variables(t_cmd *cmd, int heredoc, t_shell *shell)
@@ -87,16 +81,10 @@ int	expand_variables(t_cmd *cmd, int heredoc, t_shell *shell)
 	{
 		quote = get_quote((*cmd->av)[i]);
 		if ((*cmd->av)[i] != '$' || (quote == QUOTE_SINGLE && !heredoc))
-		{
-			i++;
-			expanded_size++;
-		}
+			do_incr(&expanded_size, &i, 1, 1);
 		else if (((*cmd->av)[i] == '$' || (quote == QUOTE_SINGLE && !heredoc))
 				&& (*cmd->av)[i + 1] == '?')
-		{
-			i += 2;
-			expanded_size++;
-		}
+			do_incr(&expanded_size, &i, 2, 1);
 		else
 		{
 			i += get_next_var_len(*cmd->av + i + 1, &buffer) + 1;

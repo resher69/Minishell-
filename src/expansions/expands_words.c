@@ -6,22 +6,19 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/12 17:10:40 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 18:46:48 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	expand_words(t_cmd *cmd)
+size_t	count_exp_word(t_cmd *cmd)
 {
 	int		i;
-	int		j;
 	size_t	n_words;
-	char	**argv;
 	int		quote;
 
-	i = 0;
-	i += skip_ifs(*cmd->av + i);
+	i = skip_ifs(*cmd->av);
 	n_words = 0;
 	while (*cmd->av && (*cmd->av)[i])
 	{
@@ -41,8 +38,18 @@ int	expand_words(t_cmd *cmd)
 		else
 			i += skip_ifs(*cmd->av + i);
 	}
-	cmd->ac = n_words;
-	argv = malloc(sizeof(char *) * (n_words + 1));
+	return (n_words);
+}
+
+int	expand_words(t_cmd *cmd)
+{
+	int		i;
+	int		j;
+	char	**argv;
+	int		quote;
+
+	cmd->ac = count_exp_word(cmd);
+	argv = ft_calloc(sizeof(char *), (cmd->ac + 1));
 	if (!argv)
 		return (1);
 	i = 0;
@@ -90,7 +97,7 @@ int	expand_words(t_cmd *cmd)
 		i += skip_ifs(*cmd->av + i);
 	}
 	*argv = NULL;
-	argv -= n_words;
+	argv -= cmd->ac;
 	free(*cmd->av);
 	free(cmd->av);
 	cmd->av = argv;

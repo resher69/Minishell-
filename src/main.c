@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:16:13 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 19:59:04 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 17:37:38 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,10 @@ void	ft_exec(t_shell *shell)
 	tmp = expand(shell->usr_cmd[0]->av[0], 0, shell->n_cmd, shell);
 	if (tmp)
 		shell->usr_cmd[0] = tmp;
-	if (shell->n_cmd == 1 && is_builtin(tmp->av[0], shell, tmp->av[1]) == 1)
+	if (tmp->av[0] && shell->n_cmd == 1
+		&& is_builtin(tmp->av[0], shell, tmp->av[1]) == 1)
 		exec_builtins(tmp->av[0], tmp->av, shell, tmp->fd_out);
-	else
+	else if (tmp->av[0])
 		exec_loop(shell);
 }
 

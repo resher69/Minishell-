@@ -20,6 +20,7 @@ SRCS=			environement.c \
 				libft_bis.c \
 				libft_third.c \
 				main.c \
+				expand_variables_utils.c \
 				expand_variables.c \
 				expands_quotes.c \
 				expand.c \
