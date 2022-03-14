@@ -6,22 +6,19 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 17:11:53 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/13 19:36:26 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 15:26:20 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*heredoc_loop(char *stop, t_shell *shell)
+static char	*heredoc_loop(t_cmd *tmp, t_shell *shell, char *stop)
 {
 	char	*line;
 	char	*content;
-	t_cmd	*tmp;
 
 	line = NULL;
 	content = NULL;
-	tmp = calloc(sizeof(t_cmd), 1);
-	tmp->av = calloc(sizeof(char *), 1);
 	while (1)
 	{
 		line = readline("> ");
@@ -39,14 +36,38 @@ static char	*heredoc_loop(char *stop, t_shell *shell)
 			break ;
 		}
 	}
+	free(tmp);
 	return (content);
+}
+
+static char	*heredoc_init_loop(char *stop, t_shell *shell)
+{
+	char	*line;
+	char	*content;
+	t_cmd	*tmp;
+
+	line = NULL;
+	content = NULL;
+	tmp = ft_calloc(sizeof(t_cmd), 1);
+	if (!tmp)
+	{
+		print_error("malloc: ", NULL, NULL, ENOMEM);
+		return (0);
+	}
+	tmp->av = ft_calloc(sizeof(char *), 1);
+	if (!tmp->av)
+	{
+		print_error("malloc: ", NULL, NULL, ENOMEM);
+		return (0);
+	}
+	return (heredoc_loop(tmp, shell, stop));
 }
 
 static void	heredoc(char *stop, int pipe_fd[2], t_shell *shell)
 {
 	char	*content;
 
-	content = heredoc_loop(stop, shell);
+	content = heredoc_init_loop(stop, shell);
 	if (content)
 		ft_putstr_fd(content, pipe_fd[STDOUT_FILENO]);
 	free(content);
@@ -105,61 +126,4 @@ int	heredoc_handler(t_cmd *current, char *stop, t_shell *shell)
 		return (-1);
 	}
 	return (0);
-}
-
-int	redir_in_double(t_cmd *cmd, size_t id_redir, t_shell *shell)
-{
-	size_t	i;
-	size_t	j;
-	char	**av;
-
-	i = 0;
-	av = malloc(sizeof(char *) * cmd->ac);
-	while (i < id_redir)
-	{
-		av[i] = cmd->av[i];
-		i++;
-	}
-	j = i;
-	if (cmd->av[i])
-	{
-		free(cmd->av[i]);
-		i++;
-		if (cmd->av[i])
-		{
-			if (heredoc_handler(cmd, cmd->av[i], shell) == -1)
-			{
-				cmd->valid = 0;
-			}
-			if (cmd->fd_in < 0)
-			{
-				cmd->valid = 0;
-				print_error("open: ", cmd->av[i], NULL, errno);
-			}
-			else
-				cmd->flags |= E_FILEIN;
-		}
-		else
-		{
-			cmd->valid = 0;
-			print_error(NULL, NULL,
-				"syntax error near unexpected token `newline'\n", 258);
-		}
-	}
-	if (cmd->av[i])
-	{
-		free(cmd->av[i]);
-		i++;
-		while (i < cmd->ac)
-		{
-			av[j] = cmd->av[i];
-			i++;
-			j++;
-		}
-		av[j] = NULL;
-		free(cmd->av);
-	}
-	cmd->av = av;
-	cmd->ac = j;
-	return (id_redir + 1);
 }

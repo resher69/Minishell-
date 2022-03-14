@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:14:39 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 19:58:17 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 15:05:30 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,5 +137,7 @@ char		**list_to_char(t_env_var *env);
 void		set_new_terminal(t_shell *s);
 int			split_usr_input(char *usr_input, t_shell *shell);
 size_t		check_pipe(t_cmd **cmd);
+int			cpy_after_redir(t_cmd *cmd, char **av, size_t i, size_t j);
+void		open_heredoc(t_cmd *cmd, size_t i, t_shell *shell);
 
 #endif

@@ -24,7 +24,7 @@ SRCS=			environement.c \
 				expands_quotes.c \
 				expand.c \
 				expands_words.c \
-				redir_in_simple.c \
+				redir_in.c \
 				redir_in_double.c \
 				redir_out_simple.c \
 				redir_out_double.c \
