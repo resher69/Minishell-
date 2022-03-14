@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 17:53:00 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 18:03:44 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:33:44 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	env_new(t_shell *s, char *var)
 	t_env_var	*new;
 	t_env_var	*current;
 
-	new = calloc(1, sizeof(t_env_var));
+	new = ft_calloc(1, sizeof(t_env_var));
 	if (!new)
 		return (-1);
 	new->name = ft_substr(var, 0, ft_strchr(var, '=') - 1);

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 16:16:14 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 20:26:12 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:34:31 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	expand_quotes(t_cmd *cmd)
 	{
 		if (cmd->av[i])
 		{
-			expand = malloc(sizeof(char) * strlen(cmd->av[i]));
+			expand = malloc(sizeof(char) * ft_strlen(cmd->av[i]));
 			cpy_expand_quote(expand, cmd, i);
 			free(cmd->av[i]);
 			cmd->av[i] = expand;

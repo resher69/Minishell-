@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 14:08:46 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/14 18:32:33 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:35:15 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**get_locations(char **envp)
 	i = 0;
 	while (envp && envp[i])
 	{
-		if (strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 			return (ft_split(envp[i] + 5, ':'));
 		i++;
 	}
@@ -106,7 +106,7 @@ char	*get_exec_path(char *exec_name, char **locations,
 		return (ft_strldup(exec_name, ft_strlen(exec_name)));
 	if (*exec_name)
 	{
-		if (strncmp(exec_name, "./", 2) == 0)
+		if (ft_strncmp(exec_name, "./", 2) == 0)
 		{
 			fd_buf = open(exec_name, O_RDONLY | S_IRUSR | S_IRGRP | S_IROTH);
 			if (fd_buf > 0)

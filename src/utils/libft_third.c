@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_third.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 17:57:19 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 18:59:30 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:34:02 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_substr(char *src, unsigned int start, size_t len)
 	new_max_len = ft_strlen(&src[start]);
 	if (len > new_max_len)
 		len = new_max_len;
-	new = calloc((len + 1), sizeof(char));
+	new = ft_calloc((len + 1), sizeof(char));
 	if (!new)
 		return (NULL);
 	ft_strlcpy(new, &src[start], len + 1);

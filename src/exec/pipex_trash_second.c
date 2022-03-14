@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 18:09:02 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/13 18:09:23 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:33:35 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	**ft_split(char const *s, char c)
 	char	*start;
 	size_t	i;
 
-	strs_split = calloc(sizeof(char *), (count_sep(s, c) + 1));
+	strs_split = ft_calloc(sizeof(char *), (count_sep(s, c) + 1));
 	if ((count_sep(s, c) == 0))
 		return (strs_split);
 	i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_bis.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agardet <agardet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:47:51 by agardet           #+#    #+#             */
-/*   Updated: 2022/03/13 18:07:22 by agardet          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:33:55 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_strjoin(char *s1, char *s2, int alloc_args)
 		return (error_handling(s1, s2, alloc_args));
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	new = calloc((s1_len + s2_len + 1), sizeof(char));
+	new = ft_calloc((s1_len + s2_len + 1), sizeof(char));
 	if (!new)
 		return (error_handling(NULL, NULL, alloc_args));
 	ft_strlcpy(new, s1, s1_len + 1);
@@ -64,7 +64,7 @@ char	*ft_nbtobase(long long nb, char *base)
 
 	base_len = ft_strlen(base);
 	i = get_nb_len(nb, base_len);
-	nbr = calloc(i + 1, sizeof(char));
+	nbr = ft_calloc(i + 1, sizeof(char));
 	if (!nbr)
 		return (NULL);
 	if (nb < 0)

@@ -6,11 +6,29 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 16:48:04 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/13 19:59:43 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:36:02 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+	size_t	diff;
+
+	if (!s1 || !s2)
+		return (1);
+	i = 0;
+	while (s1[i] && i < n - 1)
+	{
+		diff = (unsigned char)s1[i] - (unsigned char)s2[i];
+		if (diff)
+			return (diff);
+		i++;
+	}
+	return (diff);
+}
 
 size_t	check_pipe(t_cmd **cmd)
 {

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 17:53:43 by ebellon           #+#    #+#             */
-/*   Updated: 2022/03/13 18:04:54 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 20:33:38 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_strndup(char *src, size_t size)
 
 	if (!src)
 		return (NULL);
-	dst = (char *)calloc(sizeof(char), (size + 1));
+	dst = (char *)ft_calloc(sizeof(char), (size + 1));
 	if (!dst)
 		return (NULL);
 	i = 0;
